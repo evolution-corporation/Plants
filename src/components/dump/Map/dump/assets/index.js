@@ -1,0 +1,9 @@
+export { default as NoneOwnerMarker } from './NoneOwnerMarker.svg';
+export { default as OtherPeopleMarker } from './OtherPeopleMarker.svg';
+export { default as ReservMarker } from './ReservMarker.svg';
+export { default as TreeMarker } from './TreeMarker.svg';
+export { default as Shadown } from './Shadown.svg';
+export { default as Indicator } from './Indicator.svg';
+export { default as GreenTree } from './GreenTree.svg';
+export { default as GrayTree } from './GrayTree.svg';
+export { default as MyLocation } from './MyLocation.svg'

@@ -1,0 +1,14 @@
+import { createReducer } from '@reduxjs/toolkit';
+import { createPlant, addPlantData, upLoadPlant } from '../actions';
+
+export default createReducer({ type: 'Fruit' }, (builder) => {
+  builder.addCase(createPlant, (state, { payload }) => {
+    return { coordinate: payload };
+  });
+  builder.addCase(addPlantData, (state, { payload }) => {
+    return { ...state, ...payload };
+  });
+  builder.addCase(upLoadPlant, () => {
+    return null
+  })
+});
