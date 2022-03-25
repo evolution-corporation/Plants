@@ -51,7 +51,6 @@ export default function ({}) {
   return (
     <Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName={'Nurseries'}
     >
       <Screen
         component={Main}
@@ -85,7 +84,7 @@ export default function ({}) {
           headerShadowVisible: false,
           headerBackVisible: false,
           title: null,
-          headerLeft: () => <BackArrow goBack={navigation.goBack} style={styles.buttonGoBackInCircule}/>
+          //headerLeft: () => <BackArrow goBack={navigation.goBack} style={styles.buttonGoBackInCircule}/>
         })}
       />
       <Screen
@@ -99,7 +98,7 @@ export default function ({}) {
           headerShadowVisible: false,
           headerBackVisible: false,
           title: null,
-          headerLeft: () => <BackArrow goBack={navigation.goBack} style={styles.buttonGoBackInCircule}/>
+          // headerLeft: () => <BackArrow goBack={navigation.goBack} style={styles.buttonGoBackInCircule}/>
         })}
       />
       <Screen

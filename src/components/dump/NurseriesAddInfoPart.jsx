@@ -1,17 +1,31 @@
-import React, { memo, useState, useRef, useEffect } from 'react';
+import React, { memo, useRef, useEffect, useReducer } from 'react';
 import { View, StyleSheet, Text, Animated, Platform } from 'react-native';
 import { i18n } from '~services';
-import { ColorButton } from './buttons'
+import { ColorButton, EditButton } from './buttons'
 
-export function NurseriesAddInfoPart({ style, title, children, hiddenTitle=false, onPress, textButton=i18n.t('next'), visable=true, rigthTitle=null, childrenStyle }) {
+export function NurseriesAddInfoPart({ hideButton, style, title, children, hiddenTitle=false, onPress, textButton=i18n.t('next'), visable=true, permission=true, isEdit=false, editMode=true, onPressEdit }) {
     const show = useRef(new Animated.Value(0)).current
-    const [showTitle, setShowTitle] = useState(true)
-    const [showButton, setShowButton] = useState(true)
+    const [state, dispatch] = useReducer((state, { payload, type }) => {
+      switch (type) {
+        case 'showButton':
+          if (hiddenTitle) {
+            return { ...state, showButton: false, showTitle: false, editMode: false };
+          } else {
+            return { ...state, showButton: false }
+          };
+        case 'editMode':
+          return { ...state, editMode: payload }
+        default:
+          break;
+      }
+    }, { showTitle: true, showButton: true }, ()=>({ showTitle: !(hideButton && hiddenTitle), showButton: !hideButton }))
     const styles = StyleSheet.create({
         backgroun: {
             opacity: show,
             width: '100%',
-            overflow: 'visible'
+            overflow: 'visible',
+            paddingHorizontal: 30,
+            
         },
         title: {
             color: '#FFFFFF',
@@ -28,35 +42,50 @@ export function NurseriesAddInfoPart({ style, title, children, hiddenTitle=false
             backgroundColor: '#EFEFEF'
         }
     })
-
-
+    if (!Array.isArray(children)) {
+      children = [children];
+    }
     useEffect(() => {
+      
       if (visable) Animated.timing(show, { toValue: 1, useNativeDriver: false }).start();
+      
     }, [visable]);
     
+    useEffect(()=>{
+      dispatch({ type: 'editMode', payload: editMode });
+    },[editMode])
+
     if (!visable) return null
     return (
       <Animated.View style={[style, styles.backgroun]}>
-        {title && showTitle ? (
+        {title && state.showTitle ? (
           <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
             <Text style={styles.title}>{title}</Text>
-            {rigthTitle}
+            {isEdit && !state.editMode ? <EditButton onPress={onPressEdit} /> : null}
           </View>
         ) : null}
-        <View style={[childrenStyle, styles.content]}>{children}</View>
-        {showButton ? (
+
+        <View style={styles.content}>
+          {state.editMode ? (
+            children[0]
+          ) : (
+            <View style={{ alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
+              {children[1]}
+              {state.showTitle ? null : <EditButton onPress={onPressEdit} />}
+            </View>
+          )}
+        </View>
+
+        {onPress && state.showButton ? (
           <ColorButton
             text={textButton}
             style={styles.button}
-            event={
-              onPress
-                ? () => {
-                    if (hiddenTitle) setShowTitle(false);
-                    setShowButton(false);
-                    onPress();
-                  }
-                : null
-            }
+            event={() => {
+              if (permission) {
+                dispatch({ type: 'showButton' });
+                onPress();
+              }
+            }}
             fullWidth={false}
           />
         ) : null}

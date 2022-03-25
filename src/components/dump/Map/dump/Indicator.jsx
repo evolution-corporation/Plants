@@ -37,9 +37,9 @@ export default function ({ style, status }) {
 
   return (
     <View style={style}>
-      <Animated.View style={[{ transform: [{ rotateZ: '70deg' }] }]}>
+      <View style={[{ transform: [{ rotateZ: '70deg' }] }]}>
         <Shadown />
-      </Animated.View>
+      </View> 
       <Animated.View style={[styles.indicator, { transform: [{ translateY: _position }] }]}>
         <Indicator />
       </Animated.View>

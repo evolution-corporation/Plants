@@ -11,3 +11,4 @@ export { default as ReadyButton } from './ReadyButton';
 export { default as Widget } from './Widget.jsx'
 export { default as SearchButton } from './SearchButton.jsx'
 export { default as EditButton } from './EditButton.jsx'
+export { default as MessageButton } from './MessageButton.jsx'

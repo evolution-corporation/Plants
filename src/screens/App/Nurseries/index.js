@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { i18n } from '~services';
@@ -7,6 +7,7 @@ import { BackArrow, NurseriesMenu } from '~components';
 import NurseriesList from './NurseriesList';
 import Nurserie from './Nurserie';
 import MyNurseries from './MyNurseries';
+import { useDispatch, useSelector } from 'react-redux';
 
 const { Group, Navigator, Screen } = createNativeStackNavigator();
 
@@ -27,9 +28,9 @@ const styles = StyleSheet.create({
 });
 
 export default function () {
+  const myNurseries = useSelector(state => state.nurserie)
   return (
     <Navigator
-      initialRouteName='MyNurseries'
       screenOptions={({ navigation, route }) => ({
         headerTitleAlign: 'center',
         headerLeft: () => <BackArrow goBack={navigation.goBack} />,
@@ -40,7 +41,7 @@ export default function () {
       <Screen
         name={"NurseriesList"}
         component={NurseriesList}
-        initialParams={{ isShowMenu: false }}
+        initialParams={{ isShowMenu: false, filter: {} }}
         options={({ navigation, route }) => ({
           title: i18n.t('Nurseries'),
            headerRight: () => <NurseriesMenu style={styles.buttonMenu} direction={'bottom'} />
@@ -65,6 +66,7 @@ export default function () {
       <Screen
         name={'MyNurseries'}
         component={MyNurseries}
+        initialParams={myNurseries}
         options={()=>({
           headerStyle: null,
           headerTransparent: true,
@@ -73,6 +75,7 @@ export default function () {
           headerLeft: () => <BackArrow />,
           headerBackVisible: false,
           headerTitleStyle: styles.headerStyle,
+          title: i18n.t('390f9acb-a543-43fe-aff6-eae4001f5208')
         })}
       />
     </Navigator>

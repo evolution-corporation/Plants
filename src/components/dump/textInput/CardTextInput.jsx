@@ -45,6 +45,7 @@ export default function ({ placeholder='', style, onChange, maxLength=240, initV
               placeholder={placeholder}
               onChangeText={editChange}
               maxLength={maxLength}
+              multiline={true}
             />
             <Text style={styles.textLengt}>{message.length} / {maxLength}</Text>
       </View>

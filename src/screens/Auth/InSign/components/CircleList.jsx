@@ -10,7 +10,7 @@ export default class extends Component {
         flexDirection: 'row',
         alignSelf: 'center',
       },
-      circle: { height: 7, width: 7, borderRadius: 3.5, marginHorizontal: 3.5 },
+      circle: { height: 11, width: 11, borderRadius: 5.5, marginHorizontal: 3.5 },
     });
   }
 

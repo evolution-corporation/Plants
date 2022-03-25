@@ -1,14 +1,18 @@
-import React, { useState, useCallback, memo } from 'react'
-import { View, FlatList, Text, StyleSheet, Platform } from 'react-native'
+import React, { useState, useCallback, memo, useRef } from 'react'
+import { View, FlatList, Text, StyleSheet, Platform, StatusBar } from 'react-native'
 import { database, i18n } from '~services'
 import { InputMessage, ChatBackground } from '~components'
 import ErrorMessage from '~assets/ErrorMessage.svg'
 import { useFocusEffect, useIsFocused } from '@react-navigation/native'
+import { useEffect } from 'react'
 
 export function Chat({ navigation, route }) {
     const [messages, setMessages] = useState([])
+    const [isEnd, setIsEnd] = useState(true)
+    const flatList = useRef()
     const isFocused = useIsFocused()
-    
+    StatusBar.setBackgroundColor('#678933');
+    StatusBar.setBarStyle('light-content')
     const styles = StyleSheet.create({
         background: {
             justifyContent: 'space-between',
@@ -18,7 +22,7 @@ export function Chat({ navigation, route }) {
         },
         messages: {
             borderRadius: 19.5,
-            maxWidth: '50%',
+            maxWidth: '90%',
             paddingHorizontal: 9,
             paddingVertical: 5,
             marginVertical: 3.5
@@ -58,18 +62,21 @@ export function Chat({ navigation, route }) {
     })
 
     useFocusEffect(useCallback(()=> {
-        if (!route.params.chatId) {
-          database.chat.getChatsBetweenMeAndUser({ uid: route.params.userId }).then(async (chat) => {
-            
+      let subscribe = null
+        if (route.params.chatId == undefined) {
+          database.chat.getChatsBetweenMeAndUser({ uid: route.params.userId }).then((chat) => {
             if (chat) {
-                if (isFocused) navigation.setParams({ chatId: chat.id });
+              navigation.setParams({ chatId: chat.id });
             } else {
-                const chatId = await database.chat.createChat({ userId: route.params.userId });
-                if (isFocused) navigation.setParams({ chatId })
+              subscribe = database.chat.subscribeGetChatId({ uid: route.params.userId, callback: (chatId) => {
+                if (isFocused) {
+                  navigation.setParams({ chatId: chatId });
+                }
+              } });
             }
-          });
+          })
         } else {
-            let subscribe = database.chat.subscribeGetMessageByChat({ id: route.params.chatId, callback: (payload) => {
+            subscribe = database.chat.subscribeGetMessageByChat({ id: route.params.chatId, callback: (payload) => {
                 if(isFocused) setMessages(payload)
             } })
             return () => {
@@ -78,20 +85,31 @@ export function Chat({ navigation, route }) {
         }
     }, [route.params.chatId]))
 
+    useEffect(()=>{
+      if (isEnd) {
+        flatList.current?.scrollToEnd()
+      }
+    },[messages])
+
     return (
       <ChatBackground style={styles.background}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {messages.length > 0 ? (
             <FlatList
+              ref={flatList}
               data={messages}
               refreshing={true}
               style={{ width: '100%' }}
-              contentContainerStyle={{ flex: 1, justifyContent: 'flex-end' }}
+              // contentContainerStyle={{ flex: 1, justifyContent: 'flex-end' }}
+              showsVerticalScrollIndicator={false}
+              onEndReached={() => setIsEnd(true)}
+              disableIntervalMomentum={true}
+              onMomentumScrollBegin={()=> setIsEnd(false)}
               renderItem={({ item, index }) => (
                 <View
                   key={index.toString()}
                   style={[styles.messages, item.isMy ? styles.messagesMy : styles.messagesOtherUser]}>
-                  <Text style={[styles.messages, { color: item.isMy ? '#FFFFFF' : '#000000' }]}>{item.text}</Text>
+                  <Text style={[styles.messages, { color: item.isMy ? '#FFFFFF' : '#000000' }]}>{item.message.text}</Text>
                 </View>
               )}
             />
@@ -105,9 +123,10 @@ export function Chat({ navigation, route }) {
           )}
         </View>
         <InputMessage
-          onPress={(message) =>
+          onPress={(message) =>{
+            flatList.current?.scrollToEnd();
             database.chat.sendMessages({ chatId: route.params.chatId, userId: route.params.userId, message })
-          }
+          }}
         />
       </ChatBackground>
     );

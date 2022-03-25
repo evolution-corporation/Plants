@@ -34,6 +34,9 @@ export function UserListPlant({ plants, uid, name, style }) {
       paddingTop: 13,
       paddingLeft: 28,
       paddingRight: 7,
+      elevation: 3,
+      shadowColor: '#000000',
+      backgroundColor: '#FFFFFF'
     },
     topBottomText: {
       justifyContent: 'space-between',

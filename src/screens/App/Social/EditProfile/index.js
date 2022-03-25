@@ -80,13 +80,15 @@ export default function ({ route, navigation }) {
   }, [route.params.isPress]);
 
   if (state.isLoading) return (
-    <BackLeaves style={{  justifyContent: 'center', alignItems: 'center' }}>
+    // <BackLeaves style={{  justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#86B738', flex: 1 }}>
       <ActivityIndicator color={'#FFFFFF'} size={'large'} />
-    </BackLeaves>
+    </View>
+    // </BackLeaves>
   )
 
   return (
-    <BackLeaves headerHeight={headerHeight}>
+    // <BackLeaves headerHeight={headerHeight}>
       <View style={styles.background}>
         <ImagePicker
           style={styles.imagePicker}
@@ -134,6 +136,6 @@ export default function ({ route, navigation }) {
           onOpen={()=>dispatch({ type: 'openDropList', payload: 'gender' })}
         />
       </View>
-    </BackLeaves>
+    // </BackLeaves>
   );
 }

@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import TreeMarker from '~assets/TreeMarker.svg';
-import MapStyle from '~assets/mapStyle.json';
+import MapStyle from '~assets/mapStyleMain.json';
 import BottomLeaves from '~assets/BotomLeaves.svg';
 import GreenLeaves from '~assets/GreenLeaves.svg';
 import YellowBigLeave from '~assets/YellowBigLeave.svg';
@@ -11,6 +11,7 @@ import Flower from '~assets/Flower.svg';
 import TwoGreenLeaves from '~assets/TwoGreenLeaves.svg';
 import ManyFlower from '~assets/ManyFlower.svg';
 import TwoGreenLeavesBig from '~assets/TwoGreenLeavesBig.svg';
+import LeavesTwo from '~assets/LeavesTwo.svg';
 import { useSelector } from 'react-redux';
 import { geocoding } from '~services'
 
@@ -60,6 +61,7 @@ export function Map({ markers }) {
         position: 'absolute',
         top: -40,
         right: '25%',
+        zIndex: -1,
       },
       flowerLeftCenter: {
         position: 'absolute',
@@ -115,7 +117,13 @@ export function Map({ markers }) {
         position: 'absolute',
         left: '20%',
         top: -60,
-        zIndex: -2
+        zIndex: -2,
+      },
+      leavesTwo: {
+        position: 'absolute',
+        right: -25,
+        top: '5%',
+        zIndex: -1
       },
     });
    
@@ -165,6 +173,7 @@ export function Map({ markers }) {
         <ManyFlower style={styles.manyFlowerRigth} />
         <ManyFlower style={styles.manyFlowerLeft} />
         <TwoGreenLeavesBig style={styles.twoGreenLeavesBig} />
+        <LeavesTwo style={styles.leavesTwo} />
       </View>
     );
 }

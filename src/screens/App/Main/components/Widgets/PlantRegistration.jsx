@@ -3,7 +3,7 @@ import { View, Text, Animated, StyleSheet, Platform, TouchableOpacity } from 're
 import { useNavigation } from '@react-navigation/native'
 import { Tree } from './assets'
 import { i18n } from '~services'
-import { Widget } from '~components'
+import { Widget, TextHref } from '~components';
 
 export default function PlantRegistrationWidget({ style, index=0, onPress, isCompact=false }) {
     const navigation = useNavigation()
@@ -24,6 +24,7 @@ export default function PlantRegistrationWidget({ style, index=0, onPress, isCom
           fontWeight: '500'
         },
         goOver: {
+          alignSelf: 'flex-start',
           marginTop: 5,
           color: '#FFFFFF',
           fontFamily: Platform.OS === 'android' ? 'Roboto-Bold' : 'System',
@@ -38,21 +39,28 @@ export default function PlantRegistrationWidget({ style, index=0, onPress, isCom
     }, [isCompact])
 
     return (
-      <Widget 
-        onPress={()=>{
-          onPress()
-          navigation.navigate('HelpPlant', { screen: 'Question' })
-        }} 
-        style={[style, styles.background]} 
-        isCompact={isCompact} 
-        key={'PlantRegistration'} 
+      <Widget
+        onPress={() => {
+          onPress();
+          // navigation.navigate('HelpPlant', { screen: 'Question' });
+        }}
+        style={[style, styles.background]}
+        isCompact={isCompact}
+        key={'PlantRegistration'}
         index={index}>
-          <Tree />
-          <View style={{ flex: 1, justifyContent: 'space-between' }}>
-            <Text style={styles.title}>{i18n.t('Registration')}</Text>
-            <Text style={styles.descriprion}>{i18n.t('5b812df6-87b5-473c-bb4d-8340aa3d7928')}</Text>
-            <Text style={styles.goOver}>{i18n.t('GoOver')}</Text>
-          </View>
+        <Tree />
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+          <Text style={styles.title}>{i18n.t('Registration')}</Text>
+          <Text style={styles.descriprion}>{i18n.t('5b812df6-87b5-473c-bb4d-8340aa3d7928')}</Text>
+          <TextHref
+            style={styles.goOver}
+            text={i18n.t('GoOver')}
+            event={() => {
+              onPress();
+              navigation.navigate('HelpPlant', { screen: 'Question' });
+            }}
+          />
+        </View>
       </Widget>
     );
 }

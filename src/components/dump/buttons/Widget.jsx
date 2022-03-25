@@ -1,5 +1,5 @@
 import React, { useRef, memo, useState, useEffect } from 'react'
-import { Animated, StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native'
+import { Animated, StyleSheet, TouchableOpacity, View, Dimensions, Pressable } from 'react-native'
 
 export function Widget({ style, children, onPress, index, isCompact = false }) {
   const [isShow, setIsShow] = useState(!isCompact)
@@ -41,7 +41,7 @@ export function Widget({ style, children, onPress, index, isCompact = false }) {
 
   if (Array.isArray(children)) {
     return (
-      <TouchableOpacity onPressIn={onPress}>
+      <Pressable onPressIn={isCompact ? onPress : null}>
         <Animated.View style={[style, styles.background, { width, left: width.interpolate({ outputRange: [widthParent - 32 * index, 0], inputRange: [62, 226] }) }]}>
           <Animated.View style={[styles.image, { transform: [{ scale: width.interpolate({ outputRange: [0.9, 1], inputRange: [62, 226] }) }] }]}>
             {children[0]}
@@ -50,15 +50,13 @@ export function Widget({ style, children, onPress, index, isCompact = false }) {
           {isShow ? children.slice(1) : null}
           </View>
         </Animated.View>
-      </TouchableOpacity>
+      </Pressable>
     );
   } else {
     return (
-      <TouchableOpacity onPressIn={onPress}>
-        <Animated.View style={[style, styles.background, { width }]}>
-          {children}
-        </Animated.View>
-      </TouchableOpacity>
+      <Pressable onPressIn={isCompact ? onPress : null}>
+        <Animated.View style={[style, styles.background, { width }]}>{children}</Animated.View>
+      </Pressable>
     );
   }
 }

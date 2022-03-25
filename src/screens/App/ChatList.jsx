@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from 'react'
+import React, { useCallback, useReducer} from 'react'
 import { View, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator, Image,Text, Platform } from 'react-native'
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { ListUserSearch } from '~components'
@@ -9,8 +9,11 @@ export default function ({ navigation, route }) {
       switch (type) {
         case 'loading': return {..._state, isLoading: true }
         case 'setChats': return { ..._state, isLoading: false, chats: payload }
+        case 'updateChat':
+          const chtats = [ payload, ..._state.chats.filter(item => item.id != payload.id)]
+          return { ..._state, isLoading: false, chats: chtats };
       }
-    }, { isLoading: true })
+    }, { isLoading: true, chats: [] })
     const isFocused = useIsFocused()
     const styles = StyleSheet.create({
       background: {
@@ -39,30 +42,41 @@ export default function ({ navigation, route }) {
       }
     })
     
-    useFocusEffect(useCallback(()=>{
-      database.chat.getChatsOfUser().then(payload => {
-        if (isFocused) {
-          dispatch({ type: 'setChats', payload });
+    useFocusEffect(useCallback(() => {
+      database.chat.subscribeEvent({ callback: (chat) => {
+        dispatch({ type: 'updateChat', payload: chat });
+      } })
+      return () => {
+        if (typeof unc == 'function') {
+          uns();
         }
-      })
-    },[]))
+      };
+    }, [dispatch]));
 
 
 
     return (
       <View style={styles.background}>
-        {
-          route.params.isSearch ? <ListUserSearch name={route.params.searchName} /> : 
-          <FlatList 
+        {route.params.isSearch ? (
+          <ListUserSearch name={route.params.searchName} />
+        ) : (
+          <FlatList
             data={state.chats}
-            renderItem={({ item })=>(
-              <TouchableOpacity style={styles.backgroundUser} onPress={()=>navigation.navigate('Chat', { ...item })}>
-                  <Image source={ item.photo ? { uri: `data:image/png;base64, ${item.photo}` } : require('~assets/User.png')} style={styles.image}/>
-                  <Text style={styles.text}>{item.name}</Text>
-              </TouchableOpacity>
-            )}            
+            renderItem={({ item }) => (
+                <TouchableOpacity style={styles.backgroundUser} onPress={() => navigation.navigate('Chat', { ...item, chatId: item.id })}>
+                  <Image
+                    source={item.photo ? { uri: `data:image/png;base64, ${item.photo}` } : require('~assets/User.png')}
+                    style={styles.image}
+                  />
+                  <View>
+                    <Text style={styles.text}>{item.name}</Text>
+                    <Text>{item.lastMessage.length > 20 ? `${item.lastMessage.slice(0, 20)}..` : item.lastMessage}</Text>
+                  </View>
+                </TouchableOpacity>
+              )
+            }
           />
-        }
+        )}
       </View>
     );
 }

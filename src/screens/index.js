@@ -40,9 +40,9 @@ export function Screens () {
     let subscribeEvent = {}
     if (navigator == 'auth') {
       dispatch(actions.getReserveMarker())
+      dispatch(actions.getMyNurserie())
       dispatch(actions.checkPermision())
       dispatch(actions.getWidgetsList())
-      database.chat.setAccounUid()
       //database.chat.subscribeEvent({ callback: ({ text }) => console.log(text) }).then(subscribe => subscribeEvent.chat = subscribe)
     }
     return () => {

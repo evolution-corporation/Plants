@@ -2,11 +2,14 @@ import React, { useReducer, useEffect, memo, useMemo } from 'react'
 import { View, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Map } from '~components'
+import { useHeaderHeight } from '@react-navigation/elements';
+
 import { database, geocoding } from '~services'
 import { CountPlant } from './components'
 import { Tree } from './components/assets'
 
 export function PlantMap({ navigation, route }) {
+    const headerHeight = useHeaderHeight();
     const reserveMarkers = useSelector(state => state.user.reserveMarkers)
     const [state, dispatch] = useReducer((state_, { type, payload }) => {
         switch (type) {
@@ -46,8 +49,9 @@ export function PlantMap({ navigation, route }) {
         },
         countPlant: {
             position: 'absolute',
-            right: 30,
-            top: 109
+            right: 10,
+            top: headerHeight,
+            height: 50
         },
         button: {
             backgroundColor: '#FFFFFF',
@@ -84,7 +88,9 @@ export function PlantMap({ navigation, route }) {
                 markers={useMemo(() => ([...state.markers, ...reserveMarkers]), [state.markers, reserveMarkers])}
                 startUserPosition={true}
             />
-            <CountPlant style={styles.countPlant} countPlant={state.markers.length} />
+            <View style={[styles.countPlant, { justifyContent: 'center' }]}>
+                <CountPlant countPlant={state.markers.length} />
+            </View>
             <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('HelpPlant', { screen: 'Question', params: { coordinate: state.coordinate } })}>
                 <Tree />
             </TouchableOpacity>

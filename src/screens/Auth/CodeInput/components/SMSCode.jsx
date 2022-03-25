@@ -33,7 +33,7 @@ export default function ({ style, event }) {
           });
           listRef[0].current.focus();
         } else {
-          console.log('ERORR___:' + status);
+          console.error('ERORR___:' + status);
         }
       });
     }

@@ -48,8 +48,14 @@ export default function () {
           name='MapConfirmation'
           component={MapConfirmation}
           options={({ route, navigation })=>({
+            headerShown: true,
+            headerTransparent: true,
+            headerTitleAlign: 'center',
+            headerShadowVisible: false,
+            headerBackVisible: false,
             title: null,
-            headerLeft: ()=>(<BackArrow goBack={navigation.goBack} style={styles.buttonGoBackInCircule}/>)
+            headerLeft: null
+            //headerLeft: ()=>(<BackArrow goBack={navigation.goBack} style={styles.buttonGoBackInCircule}/>)
           })}
         />
     </Navigator>

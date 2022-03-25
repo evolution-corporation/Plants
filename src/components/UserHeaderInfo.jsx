@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 export function UserHeaderInfo({ style, name, uid, photo }) {
     const user = useSelector(state => state.user)
     const navigation = useNavigation()
-    if (!photo) photo = user.photo
+    if (!photo) photo = user.avatar
     if (!uid) uid = user.uid
     const styles = StyleSheet.create({
         background: {
@@ -30,7 +30,6 @@ export function UserHeaderInfo({ style, name, uid, photo }) {
             borderWidth: 2
         }
     })
-
     return (
       <TouchableOpacity style={styles.background} onPress={()=>navigation.navigate('Social', { screen: 'Profile', params: { uid } })}>
         <Text style={styles.text}>{name ?? user.name ?? user.login}</Text>

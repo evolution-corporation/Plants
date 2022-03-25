@@ -5,12 +5,12 @@ import { i18n } from '~services';
 
 const listPlants = ['Shrub', 'Сoniferous', 'Deciduous', 'Flower', 'Fruit'];
 
-export default function ({ style, onPress, multiSelect=false, colorStyle='white/green' }) {
-  const [state, dispatch] = useReducer((_state, { name })=>{
+export default function ({ style, onPress, multiSelect=false, colorStyle='white/green', initValue={} }) {
+  const [state, dispatch] = useReducer((_state, { name }) => {
     const temp = multiSelect ? { ..._state } : {};
     temp[name] = !_state[name];
     return temp;
-  }, {})
+  }, initValue);
 
   const styles = StyleSheet.create({
     background: {

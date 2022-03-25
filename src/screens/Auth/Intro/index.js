@@ -31,7 +31,7 @@ export default function ({ navigation, route }) {
     logo: {
       alignSelf: 'center',
     },
-    listIntro: { flex: 1, marginBottom: 50 },
+    listIntro: { flex: 1 },
     circleList: {},
   });
 
@@ -46,8 +46,6 @@ export default function ({ navigation, route }) {
         5000,
         1,
       );
-      setTimeout(setPage, 10000, 2);
-      setTimeout(setPage, 15000, 3);
     }, []),
   );
 
@@ -71,7 +69,7 @@ export default function ({ navigation, route }) {
         <BigWhiteTreeLogo />
       </Animated.View>
       <ListIntro page={page} style={styles.listIntro} event={setStatusApp} />
-      <CircleList index={page} style={styles.circleList} />
+      {/* <CircleList index={page} style={styles.circleList} /> */}
     </ParkCityBackground>
   );
 }

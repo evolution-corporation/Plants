@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { i18n, geocoding } from '~services';
 
-export default function ({ coordinate, style }) {
-  const [adress, setAddress] = useState({});
+export default function ({ coordinate, style, adress }) {
+  // const [adress, setAddress] = useState({});
   const styles = StyleSheet.create({
     background: {
       backgroundColor: '#FFFFFF',
@@ -29,26 +29,26 @@ export default function ({ coordinate, style }) {
       lineHeight: 16,
     },
   });
-  var isActivate = true;
-  useEffect(()=>{
+  // var isActivate = true;
+  // useEffect(()=>{
     
-    return ()=> {
-      isActivate = false
-    }
-  },[setAddress])
+  //   return ()=> {
+  //     isActivate = false
+  //   }
+  // },[setAddress])
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    geocoding.getAdress(coordinate, i18n.currentLocale()).then(adress=>isActivate ? setAddress(adress) : null);
-    return () => {};
-  }, [coordinate]);
+  //   geocoding.getAdress(coordinate, i18n.currentLocale()).then(adress=>isActivate ? setAddress(adress) : null);
+  //   return () => {};
+  // }, [coordinate]);
 
   return (
     <View style={[style, styles.background]}>
       <Text style={styles.titleAddress}>
         {i18n.t('7017c6eb-a3f7-4745-8b96-d2732a524d1e')}
       </Text>
-      <Text style={styles.textAddress}>{adress.street} {adress.number}</Text>
+      <Text style={styles.textAddress}>{adress.thoroughfare} {adress.subThoroughfare}</Text>
     </View>
   );
 }

@@ -70,19 +70,19 @@ export default function NurseriesMenu ({ style, direction='top' }) {
         </TouchableOpacity>
           <Modal transparent={true} onRequestClose={showHiddenMenu} visible={isShow} animationType={'fade'}>
             <Pressable style={[StyleSheet.absoluteFill, { backgroundColor: 'transparent' }]} onPress={showHiddenMenu} />
-            <View style={[styles.menu, { ...direction }]}>
-              <TouchableOpacity
+            <View style={[styles.menu]}>
+              {/* <TouchableOpacity
                 key={'filter'}
                 style={{ flexDirection: 'row', marginVertical: 10, width: '100%' }}
                 onBlur={() => console.log('Blur')}>
                 <Filter />
                 <Text style={styles.namePage}>{i18n.t('Filter')}</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity
                 key={'My'}
                 style={{ flexDirection: 'row', marginVertical: 10, width: '100%' }}
                 onBlur={() => console.log('Blur')}
-                onPress={() => navigation.navigate('MyNurseries')}>
+                onPress={() => {showHiddenMenu(); navigation.navigate('MyNurseries');}}>
                 <Leave />
                 <Text style={[styles.namePage, { color: '#86B738' }]}>
                   {i18n.t('856b9aa2-f2f0-4e7c-9d14-f54d2df3048b')}

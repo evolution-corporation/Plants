@@ -1,11 +1,18 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import uuid from 'react-native-uuid';
 
+// import { Account } from './models'
 class Tables {
   constructor({ name }) {
     this.tableName = name
     this.collection = firestore().collection(this.tableName)
+    
+  }
+
+  getOwnerId = () => {
+    return auth()._user?.uid
   }
 
   normolizatorData = (data) => {
@@ -53,9 +60,24 @@ class Tables {
     return data
   }
 
-  createRow = async ({ data, id=uuid.v4() }) => {
-    const row = await this.collection.add(data)
-    return row.id
+  createRow = async ({ data, returnRow = false }) => {
+    try {
+      const checkData = {}
+      for (let field of Object.keys(data)) {
+        if (data[field]) {
+          checkData[field] = data[field]
+        }
+      }
+      const row = await this.collection.add(checkData)
+      if (returnRow) {
+        return row
+      }
+      return row.id
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+    
   }
 
   editRow = async ({ data, id }) => {
@@ -77,6 +99,13 @@ class Tables {
     await this.collection.doc(id).update(data)
   }
 
+  deleteRow = async ({ id }) => {
+    try {
+      await this.collection.doc(id).delete()
+    } catch (error) {
+      console.error(error)
+    }    
+  }
   
 }
 
@@ -97,31 +126,45 @@ class User extends UsersChatsTable {
 
   _getDataUser = async () => {
     const data = await this.getUserByUid({ uid: this.uid })
-    this.photo = data.photo
+    this.photo = data.avatar
     this.name = data.name ?? data.login
   }
 
   getCompact = () => {
-    return { name: this.name, photo: this.photo }
+    return { name: this.name, photo: this.avatar }
   }
 }
 
 class ChatsTable extends Tables {
   constructor(){
     super({ name: 'Chats'})
-    this.accountUid = auth()._user?.uid
   }
   
-  setAccounUid() {
-    this.accountUid = auth()._user?.uid
+
+  cryptoText (text, key){
+    let cryptoMessage = ''
+    for (let index in text) {
+      let code = text.charCodeAt(index) + key.charCodeAt(index % key.length)
+      cryptoMessage += String.fromCharCode(code)
+    }
+    return cryptoMessage
+  }
+
+  decryptoText(cryptoMessage, key) {
+    let text = ''
+    for (let index in cryptoMessage) {
+      let code = cryptoMessage.charCodeAt(index) - key.charCodeAt(index % key.length)
+      text += String.fromCharCode(code)
+    }
+    return text
   }
 
   getChatsOfUser = async () => {
-    const chats = await this.getRowsByFilter({ where: { field: 'owners', type: 'array-contains', value: this.accountUid } })
+    const chats = await this.getRowsByFilter({ where: { field: 'members', type: 'array-contains', value: this.getOwnerId() } })
     for (let i in chats) {
       let chat = chats[i]
-      if (chat.owners.length == 2) {
-        let interlocutor = new User({ uid: chat.owners[0] == this.accountUid ? chat.owners[1] : chat.owners[0] })
+      if (chat.members.length == 2) {
+        let interlocutor = new User({ uid: chat.members[0] == this.getOwnerId() ? chat.members[1] : chat.members[0] })
         await interlocutor._getDataUser()
         chat.photo = interlocutor.photo
         chat.name = interlocutor.name
@@ -133,76 +176,163 @@ class ChatsTable extends Tables {
   }
 
   subscribeGetMessageByChat = ({ id, callback }) => {
-    const returnMessages = (chatData) => {
-      callback(chatData.messages?.map(item => ({...item, isMy: this.accountUid == item.owner})) ?? [])
-    }
-    return this.subscribeUpdateRow({ id, callback: returnMessages })
+    const subscribe = this.collection.doc(id).collection('messages').orderBy('date').onSnapshot((collection) => callback(collection.docs.map(doc => {
+      const message = doc.data().message
+      if (message.type == 'text') {
+        message.text = this.decryptoText(message.text, id)
+      }
+      return ({
+        message: message,
+        id: doc.id,
+        owner: doc.data().owner,
+        isMy: this.getOwnerId() == doc.data().owner
+      })
+    })))
+
+    return subscribe
   }
 
   getChatsBetweenMeAndUser = async ({ uid }) => {
-    let chat = await this.getRowByField({field: { owners: [uid, this.accountUid] }})
-    if (chat) return chat
-    return await this.getRowByField({field: { owners: [this.accountUid, uid] }})
+    let chats = await this.collection.where('members', 'array-contains', this.getOwnerId()).get()
+    chats = chats.docs.filter(doc => doc.data().members.includes(uid))
+    for (let chat of chats) {
+      if (chat.data().members.length == 2) {
+        
+        return chat
+      }
+    }
+    return undefined
   }
 
   sendMessages = async ({ chatId=null, userId=null, message }) => {
-    if (chatId) {
-      try {
-        await this.pushDataArray({ id: chatId, data: { messages: {...message, owner: this.accountUid, date: new Date() } } })
-      } catch (error) {
-        console.error(error)
-      }
+    let chat = null
+    if (!chatId) {
+      chat = (await this.getChatsBetweenMeAndUser({ uid: userId })) ?? await this.createChat({ userId })
+      chatId = chat.id
     } else {
-      try {
-        const chat = await this.getChatsBetweenMeAndUser({ userId })
-        await this.pushDataArray({ id: chat.id, data: {...message, owner: this.accountUid, date: new Date() } })
-      } catch (error) {
-        console.log(error)
+      chat = await this.collection.doc(chatId).get()
+    }
+    try {
+      if (message.type == 'text') {
+        message.text = this.cryptoText(message.text, chatId)
       }
+      await this.collection.doc(chatId).collection('messages').add({ message, owner: this.getOwnerId(), date: new Date() })
+      await this.collection.doc(chatId).update({ lastMessageText: message.text })
+      const secondUser = chat.data().members.filter(id => id != this.getOwnerId())
+    } catch (error) {
+      console.error(error)
     }
   }
 
   createChat = async ({ userId }) => {
-    return await this.createRow({
-      data: {
-        owners: [userId, this.accountUid]
-    } }) 
+    return await this.createRow({ data: { members: [userId, this.getOwnerId()]}, returnRow: true })
   }
 
   subscribeEvent = async ({ callback }) => {
     const chats = await this.getChatsOfUser()
     const subscribe = []
-
     for (let chat of chats) {
       subscribe.push(
-        this.subscribeUpdateRow({ id: chat.id, callback: (chatData) => {
-          const lastMessages = chatData.messages[chatData.messages.length - 1]
-          if (lastMessages.owner != this.accountUid) callback(lastMessages)
-        } })
+        this.collection.doc(chat.id).onSnapshot((doc)=>{
+          const data = doc.data()
+          callback({
+            lastMessage: this.decryptoText(data.lastMessageText, doc.id),
+            id: doc.id,
+            name: chat.name,
+            photo: chat.photo
+          })
+        })
       )
     }
     
     return () => subscribe.map(subs => subs())
   }
+
+  subscribeGetChatId({ uid, callback }) {
+    return this.collection.where('members', 'array-contains', this.getOwnerId()).onSnapshot(colletion => {
+      const docs = colletion.docs
+      for (let doc of docs) {
+        if (doc.data().members.includes(uid)) {
+          callback(doc.id)
+        }
+      }
+    })
+  }
+
+  // async subscribeLastMessage({ callback }){
+  //   let subsMessages = []
+  //   const chats= await this.getChatsOfUser()
+  //   for (let chat of chats) {
+  //     subsMessages.push(this.subscribeGetLastMessage({ chat, callback }))
+  //   }
+  //   return () => {
+  //     for (let sub of subsMessages) {
+  //       sub()
+  //     }
+  //   }
+  // }
+
+  // subscribeGetLastMessage({ chat, callback }) {
+  //   return this.collection.doc(chat.id).collection('messages').orderBy('date', 'desc').limit(1).onSnapshot((docs) => {
+  //     console.log(docs)
+  //   })
+  // }
+
 }
 
 class NurseriesTable extends Tables {
   constructor(){
-    super({ name: 'Nurseries' })
-    
+    super({ name: 'Nurseries' })    
   }
 
-  create = async ({ name, type, phone, adress, site, description, image, delivery }) => {
-    return await this.createRow({ data: {
-      name, 
-      type, 
-      phone, 
-      adress, 
-      site, 
-      description, 
-      image, 
-      delivery
-    } })
+  create = async (data) => {
+    const typePlant = []
+    for (let type of Object.keys(data.typePlant)) {
+      if (data.typePlant[type]) typePlant.push(type)
+    }
+    await this.createRow({ data: { ...data, owner: this.getOwnerId(), visual: true, typePlant, site: data.site ?? null } })
+    return await this.getMyNurserie()
+  }
+
+  getMyNurserie = async () => {
+    const nurserie = await this.getRowByField({ field: { owner: this.getOwnerId() } })
+    if (!nurserie) return null
+    nurserie.plantType = Object.fromEntries(nurserie.typePlant.map(typePlant => ([typePlant, true])))
+    return nurserie
+  }
+
+  updateData = async ({ data }) => {
+    const typePlant = []
+    if (data.typePlant) {
+      for (let type of Object.keys(data.typePlant)) {
+        if (data.typePlant[type]) typePlant.push(type)
+      }
+      data.typePlant = typePlant
+    }
+    return await this.editRow({ data: { ...data}, id: data.id })
+  }
+
+  delete = async ({ id }) => {
+    // await this.editRow({ id, data: { 
+    //   adress: firestore.FieldValue.delete(), 
+    //   coordinate: firestore.FieldValue.delete(), 
+    //   typePlant: firestore.FieldValue.delete() } })
+    await this.deleteRow({ id })
+    // await this.editRow({ id, data: { visual: false } })
+  }
+
+  getNurseries = ({ filter: { isDelivery, typePlant }, onCallback }) => {
+    let nurseries = this.collection
+    if (isDelivery) {
+      nurseries = nurseries.where('isDelivery', '==', true)
+    }
+    if (typePlant) {
+      nurseries = nurseries.where('plantType', 'array-contains-any', typePlant)
+    }
+    return nurseries.onSnapshot((collection) => {
+      onCallback(collection.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+    })
+     
   }
 }
 
@@ -225,7 +355,7 @@ async function authenticateUser(status) {
     };
   } else {
     // Пользователь вышел из системы / пользователя не было в системе
-    return { user: null };
+    return { user: null }
   }
 }
 
@@ -441,6 +571,7 @@ export default {
   checkCoordinate,
   getRaiting,
   findUser,
+
 
   chat: new ChatsTable(),
   nurseries: new NurseriesTable()

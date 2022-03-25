@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Switch } from 'react-native' 
-import { i18n } from '~services'
+import { View, StyleSheet, Switch, Alert } from 'react-native' 
+import { i18n, database } from '~services'
 import { BaseButtonOption, DropList, SelectLanguage, SelectWidgets } from './components'
 import { User, Language, Widgets, Exit, Info } from './assets'
 import { useDispatch } from 'react-redux'
@@ -41,7 +41,17 @@ export default function ({ navigation, route }) {
             </View>
             <View style={{ justifyContent: 'flex-end' }}>
                     <BaseButtonOption name={i18n.t('ccb2564c-f87d-465a-8737-a9f4c886cae8')} image={<Info />} style={styles.user} onPress={()=>navigation.navigate('AboutUs')}/>
-                    <BaseButtonOption name={i18n.t('exit')} image={<Exit />} style={{ color: '#E67B16' }} onPress={()=>dispatch(actions.sigOut())}/>
+                    <BaseButtonOption 
+                        name={i18n.t('exit')} 
+                        image={<Exit />} 
+                        style={{ color: '#E67B16' }} 
+                        onPress={() => 
+                            Alert.alert(
+                                i18n.t('1e765936-736f-4ba1-90c0-71378d72de0a'),
+                                i18n.t('82da3b15-c96b-455f-aed3-e2ed370f31fa'), 
+                                [ { text: i18n.t('cancel') }, { text: i18n.t('exit'), onPress: database.exitAccount } ], 
+                                { cancelable: true })
+                        }/>
             </View>
         </View>
     )

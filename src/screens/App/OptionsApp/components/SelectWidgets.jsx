@@ -39,6 +39,9 @@ export default function ({ style }) {
                 <Messages  style={{ transform: [{ scale: 0.9 }] }}/>
                 <View style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#404040', opacity: widgets.includes('Messages') ? 0 : 0.28 }} />
             </TouchableOpacity>
+            <View>
+                
+            </View>
         </View>
     )
 }

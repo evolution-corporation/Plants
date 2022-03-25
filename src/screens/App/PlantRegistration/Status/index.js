@@ -59,7 +59,7 @@ export default function ({ route, navigation }) {
                     <Tree />
                     <CheckMarket style={{ marginTop: 10, transform: [{translateX: 10}] }}/>
                 </View>
-                <ColorButton text={i18n.t('next')} event={()=>navigation.navigate('PlantMap')}/>
+                <ColorButton text={i18n.t('next')} event={()=>navigation.navigate('Main')}/>
             </BackLeaves>
         )
     } else {

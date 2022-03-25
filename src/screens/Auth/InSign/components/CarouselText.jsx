@@ -38,18 +38,13 @@ export default function ({ style }) {
   const styles = StyleSheet.create({
     backGround: {
       width: '100%',
-      height: 72,
     },
     circleList: {
-      // alignItems: 'center',
-      // justifyContent: 'center',
-      // width: '100%',
-      // height: 11,
-      // flexDirection: 'row',
+      // marginTop: 17
     },
     list: {
       width: '100%',
-      height: 42,
+      marginVertical: 19,
     },
   });
 
@@ -58,22 +53,23 @@ export default function ({ style }) {
       text: {
         fontStyle: 'normal',
         fontWeight: 'bold',
-        fontSize: 18,
-        lineHeight: 21,
+        fontSize: 20,
+        textAlign: 'center',
         color: '#FFFFFF',
         fontFamily: Platform.OS == 'android' ? 'Roboto-Bold' : 'System',
       },
       background: {
         width: Dimensions.get('window').width,
-        height: 42,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
       },
     });
 
     return (
       <View style={styles.background} key={key}>
-        <Text style={styles.text}>{text}</Text>
+        {/* <View style={{ width: 200 }}> */}
+          <Text style={styles.text}>{text}</Text>
+        {/* </View> */}
       </View>
     );
   };

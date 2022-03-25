@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { TextInput, StyleSheet, Platform } from 'react-native';
 
-export default function ({ style, initValue, onChangeValue, placeholder, colorShema='white', onBlur, autoFocus, onPress }) {
+export default function ({ style, initValue, onChangeValue, placeholder, colorShema='white', onBlur, autoFocus, onPress, maxLength=256 }) {
   const styles = StyleSheet.create({
     textInput: {
       width: '100%',
@@ -35,6 +35,7 @@ export default function ({ style, initValue, onChangeValue, placeholder, colorSh
       onBlur={onBlur}
       autoFocus={autoFocus}
       onPressIn={onPress}
+      maxLength={maxLength}
     />
   );
 }

@@ -3,7 +3,7 @@ import { View, ActivityIndicator, StyleSheet, Text, Image, Platform } from 'reac
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import { TextHref } from '~components';
+import { TextHref, MessageButton } from '~components';
 import { database, i18n } from '~services';
 import { actions } from '~store';
 
@@ -39,7 +39,6 @@ export default function ({ avatar, name, login, category, status, uid }) {
       fontFamily: Platform.OS === 'android' ? 'Roboto-Medium' : 'System',
       fontSize: 14,
       lineHeight: 17,
-      marginLeft: 2,
     },
     category: {
       color: '#75B904',
@@ -48,7 +47,6 @@ export default function ({ avatar, name, login, category, status, uid }) {
       fontWeight: '600',
       lineHeight: 14,
       marginVertical: 2,
-      marginLeft: 2,
     },
     status: {
       flex: 1,
@@ -64,6 +62,11 @@ export default function ({ avatar, name, login, category, status, uid }) {
       fontSize: 11,
       fontWeight: '600',
     },
+    messageButton: {
+      position: 'absolute',
+      bottom: -15,
+      right: -15
+    },
   });
   const editStatus = async (status) => {
     try {
@@ -76,10 +79,13 @@ export default function ({ avatar, name, login, category, status, uid }) {
 
   return (
     <View style={styles.background}>
-      <Image
-        style={styles.image}
-        source={avatar ? { uri: `data:image/png;base64, ${avatar}`} : require('~assets/User.png')}
-      />
+      <View style={styles.image}>
+        <Image
+          style={styles.image}
+          source={avatar ? { uri: `data:image/png;base64, ${avatar}`} : require('~assets/User.png')}
+        />
+        {my_uid != uid ? <MessageButton style={styles.messageButton} id={uid} avatar={avatar} name={name ?? login} /> : null }
+      </View>
       <View style={styles.userInfoBackground}>
         <View style={styles.userInfo}>
           <Text style={styles.name}>{name ?? login}</Text>

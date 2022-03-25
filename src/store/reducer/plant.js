@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { createPlant, addPlantData, upLoadPlant } from '../actions';
 
-export default createReducer({ type: 'Fruit' }, (builder) => {
+export default createReducer({  }, (builder) => {
   builder.addCase(createPlant, (state, { payload }) => {
     return { coordinate: payload };
   });

@@ -25,9 +25,10 @@ export default function () {
   return (
     <Navigator
       screenOptions={({ navigation, route }) => ({
-        headerTransparent: true,
+        // headerTransparent: true,
         headerTitleAlign: 'center',
         headerShadowVisible: false,
+        headerStyle: { backgroundColor: '#86B738' },
         headerLeft: () => <BackArrow goBack={navigation.goBack} />,
         headerBackVisible: false,
         headerTitleStyle: styles.headerStyle,
@@ -40,23 +41,23 @@ export default function () {
         getId={({ params }) => params.uid}
         options={({ navigation, route }) => ({
           title: route.params.login,
-          headerRight: route.params.uid == user.uid ? () => (
-            <TextHref
-              event={() => {
-                Alert.alert(
-                  i18n.t('1e765936-736f-4ba1-90c0-71378d72de0a'),
-                  i18n.t('82da3b15-c96b-455f-aed3-e2ed370f31fa'),
-                  [
-                    { text: i18n.t('cancel') },
-                    { text: i18n.t('exit'), onPress: database.exitAccount },
-                  ],
-                  { cancelable: true },
-                );
-              }}
-              style={styles.buttonExit}
-              text={i18n.t('exit')}
-            />
-          ) : null,
+          // headerRight: route.params.uid == user.uid ? () => (
+          //   <TextHref
+          //     event={() => {
+          //       Alert.alert(
+          //         i18n.t('1e765936-736f-4ba1-90c0-71378d72de0a'),
+          //         i18n.t('82da3b15-c96b-455f-aed3-e2ed370f31fa'),
+          //         [
+          //           { text: i18n.t('cancel') },
+          //           { text: i18n.t('exit'), onPress: database.exitAccount },
+          //         ],
+          //         { cancelable: true },
+          //       );
+          //     }}
+          //     style={styles.buttonExit}
+          //     text={i18n.t('exit')}
+          //   />
+          // ) : null,
         })}
       />
       <Screen

@@ -28,12 +28,12 @@ export default function ({ navigation, route }) {
             fontFamily: Platform.OS == 'android' ? 'Roboto-Medium' : 'System',
             fontWeight: '500',
             color: '#FFFFFF',
-            fontSize: 13,
+            fontSize: 15,
         },
         step: {
             color: '#FFFFFF',
             fontFamily: Platform.OS === 'android' ? 'Roboto-Bold' : 'System',
-            fontSize: 16,
+            fontSize: 19,
             fontWeight: '700'
         },
         textContainer: {
@@ -47,14 +47,14 @@ export default function ({ navigation, route }) {
         text: {
             fontFamily: Platform.OS == 'android' ? 'Roboto-Medium' : 'System',
             fontWeight: '500',
-            fontSize: 16,
+            fontSize: 19,
             lineHeight: 19,
             color: '#FFFFFF',
             marginHorizontal: 30,
         },
         selectElemet: {
             flexDirection: 'row',
-            bottom: 35,
+            bottom: 40,
             position: 'absolute',
             alignSelf: 'center'
         },

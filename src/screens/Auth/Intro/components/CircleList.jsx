@@ -29,7 +29,7 @@ export default class extends Component {
           noSelectColor={'#FFFFFF'}
           isSelected={this.props.index == 1}
         />
-        <SelectElemet
+        {/* <SelectElemet
           style={this.styles.circle}
           selectColor={'#577334'}
           noSelectColor={'#FFFFFF'}
@@ -40,7 +40,7 @@ export default class extends Component {
           selectColor={'#577334'}
           noSelectColor={'#FFFFFF'}
           isSelected={this.props.index == 3}
-        />
+        /> */}
       </View>
     );
   }

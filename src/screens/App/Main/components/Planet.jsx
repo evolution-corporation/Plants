@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Image, StyleSheet, Dimensions, TouchableOpacity, Text, View, Platform, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
+import { IndicatorFill } from '~components';
 import { i18n } from '~services'
 import Map from './dump/Map.jsx'
 import { useSelector } from 'react-redux';
@@ -25,6 +26,9 @@ export default function Planet({ style }) {
       },
       textView: {
           alignSelf: 'center'
+      },
+      indicatorFill: {
+        marginRight: 5
       }
     });
 
@@ -34,7 +38,10 @@ export default function Planet({ style }) {
           <Map style={styles.planet} markers={plants} />
         </Pressable>
         <TouchableOpacity style={styles.textView} onPress={() => navigation.navigate('Social', { screen: 'Raiting' })}>
-          <Text style={styles.text}>{plants.length} / 333</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <IndicatorFill style={styles.indicatorFill} percent={plants.length / 333} />
+            <Text style={styles.text}>{plants.length} / 333</Text>
+          </View>
           <Text style={styles.text}>{i18n.t('6b1931cd-0f3e-44dd-839d-f802bc0612a4')}</Text>
         </TouchableOpacity>
       </View>

@@ -60,7 +60,7 @@ const translate = {
     few: 'Шаг {{count}}',
     many: 'Шаг {{count}}'
   },
-  Skip: 'Пропустить',
+  Skip: 'пропустить',
   Yes: 'Да',
   GoOver: 'Перейти',
   Registration: 'Регистрация',
@@ -77,7 +77,8 @@ const translate = {
   Search: 'Поиск',
   Messages: 'Сообщения',
   Filter: 'Фильтры',
-  Title: 'Название'
+  Title: 'Название',
+  No: 'Нет'
 };
 
 export default translate;

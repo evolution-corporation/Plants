@@ -24,11 +24,11 @@ export default function({ navigation, route }) {
     })
 
     return (
-        <BackLeaves headerHeight={headerHeight}>
-            <View style={styles.background}>
-                <SelectDatePeriod style={styles.selectDatePeriod} onChange={setTimePeriod} />
-                <UserListTopPosition timePeriod={timePeriod} style={styles.raiting}/>
-            </View>
-        </BackLeaves>
+        // <BackLeaves headerHeight={headerHeight}>
+        <View style={styles.background}>
+            <SelectDatePeriod style={styles.selectDatePeriod} onChange={setTimePeriod} />
+            <UserListTopPosition timePeriod={timePeriod} style={styles.raiting}/>
+        </View>
+        // </BackLeaves>
     )
 }

@@ -11,8 +11,9 @@ import { i18n, image } from '~services';
 import { TextHref } from './dump';
 import Photo from '~assets/Photo.svg';
 
-export default function ({ style, setPhoto, initImage }) {
+export default function ({ style, setPhoto, initImage, noReturnInit=false }) {
   const [_image, setImage] = useState('');
+  const [first, setFirst] = useState(true) // костыль
 
   const deleteImage = () => {
     setImage('');
@@ -22,7 +23,12 @@ export default function ({ style, setPhoto, initImage }) {
   const selectImage = async ({ uri }) => {
     setImage(uri);
     const base64 = await image.PhotoConverterBase64({ uri });
-    setPhoto(base64);
+    if (first && noReturnInit) {
+      setFirst(false);
+    } else {
+      setPhoto(base64);
+    }
+    
   };
 
   const openPicker = async () => {

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, FlatList, Text, Image, Platform, ActivityIndicator, TouchableOpacity} from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
-import { nurseries, i18n } from '~services'
-import { NurseriesMenu } from '~components'
+import { i18n, database } from '~services'
 
 export default function ({ navigation, route }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -21,18 +20,16 @@ export default function ({ navigation, route }) {
     });
 
     useEffect(()=>{
-        nurseries.getNurseries().then((result)=> {
-            if (isFocused) {
-                setNurseriesList(result)
-                setIsLoading(false)
-            }
-        })
+        let sub = database.nurseries.getNurseries({ filter: route.params.filter, onCallback: (nurseries) => {
+          if (isFocused) setNurseriesList(nurseries);
+        } });
+        setIsLoading(false);
         return ()=>{
-
+          sub()
         }
-    },[setIsLoading])
+    },[])
 
-    const Nurseries = ({ name, image, types, adress, id }) => {
+    const Nurserie = ({ nurserie }) => {
         const styles = StyleSheet.create({
             background: {
                 width: '100%',
@@ -76,17 +73,20 @@ export default function ({ navigation, route }) {
                 color: '#C4C4C4'
             }
         })
-
         return (
-            <TouchableOpacity style={styles.background} onPress={()=>navigation.navigate('Nurserie', { id })}>
-                <Image source={{ uri: image }} style={styles.image}/>
-                <View style={styles.info}>
-                    <Text style={styles.name}>{name}</Text>
-                    <Text style={styles.type}>{Object.keys(types).map(type=>(types[type] ? i18n.t(type) : null)).filter(item => item != null).join(', ')}</Text>
-                    <Text style={styles.adress}>{adress}</Text>
-                </View>
-            </TouchableOpacity>
-        )
+          <TouchableOpacity style={styles.background} onPress={() => navigation.navigate('Nurserie', { ...nurserie })}>
+            <Image source={{ uri: `data:image/png;base64, ${nurserie.image}` }} style={styles.image} />
+            <View style={styles.info}>
+              <Text style={styles.name}>{nurserie.title}</Text>
+              <Text style={styles.type}>
+                {nurserie.typePlant
+                  .map((type) => (i18n.t(type)))
+                  .join(', ')}
+              </Text>
+              <Text style={styles.adress}>{`${nurserie.adress.city} ${nurserie.adress.street}`}</Text>
+            </View>
+          </TouchableOpacity>
+        );
     }
     
     if (isLoading) {
@@ -101,7 +101,7 @@ export default function ({ navigation, route }) {
             <FlatList 
                 data={nurseriesList}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => <Nurseries name={item.name} image={item.image} types={item.type} adress={item.adress} id={item.id}/>}
+                renderItem={({ item }) => <Nurserie nurserie={item} />}
             />
         </View>
     )

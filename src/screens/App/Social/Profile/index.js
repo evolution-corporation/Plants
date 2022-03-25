@@ -22,6 +22,7 @@ export function Profile ({ route, navigation }) {
     background: {
       flex: 1,
       justifyContent: 'space-between',
+      backgroundColor: '#86B738'
     },
     userListPlant: {
       flex: 1,
@@ -50,14 +51,17 @@ export function Profile ({ route, navigation }) {
 
   if (state.isLoading) {
     return (
-      <BackLeaves style={{ justifyContent: 'center', alignItems: 'center' }} headerHeight={headerHeight}>
+      // <BackLeaves style={{ justifyContent: 'center', alignItems: 'center' }} headerHeight={headerHeight}>
+      <View style={[styles.background, { justifyContent: 'center' }]}>
         <ActivityIndicator color={'#FFFFFF'} size={'large'} />
-      </BackLeaves>
+      </View>
+      // </BackLeaves>
     )
   }
   
   return (
-    <BackLeaves style={styles.background} headerHeight={headerHeight}>
+    <View style={styles.background}> 
+      {/* <BackLeaves style={styles.background} headerHeight={headerHeight}> */}
       <UserInfo
         avatar={ state.user ? state.user.avatar : user.avatar}
         name={ state.user ? state.user.name : user.name}
@@ -73,7 +77,7 @@ export function Profile ({ route, navigation }) {
         plants={ state.user ? state.user.plants : user.plants}
         style={styles.userListPlant}
       />
-    </BackLeaves>
+    </View> // </BackLeaves>
   );
 }
 

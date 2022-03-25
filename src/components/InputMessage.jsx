@@ -23,7 +23,7 @@ export function InputMessage({ style, onPress }) {
     })
 
     const sumbitMessage = () => {
-      onPress({ text: message });
+      onPress({ text: message, type: 'text' });
       setMessage('');
     }
 
