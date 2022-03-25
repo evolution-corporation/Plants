@@ -3,7 +3,7 @@ import { createPlant, addPlantData, upLoadPlant } from '../actions';
 
 export default createReducer({  }, (builder) => {
   builder.addCase(createPlant, (state, { payload }) => {
-    return { coordinate: payload };
+    return { coordinate: payload, message: '' };
   });
   builder.addCase(addPlantData, (state, { payload }) => {
     return { ...state, ...payload };

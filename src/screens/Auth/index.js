@@ -29,7 +29,7 @@ export function Auth({}) {
   const isFirstLoading = useSelector((state) => state.navigator.isFirstLoading);
   return (
     <Navigator
-      initialRouteName={'Intro'} // isFirstLoading ? 'Intro' : 'InSign'}
+      initialRouteName={isFirstLoading ? 'Intro' : 'InSign'}
       screenOptions={({ navigation, route }) => ({
         headerTransparent: true,
         headerTitleAlign: 'center',

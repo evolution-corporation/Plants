@@ -52,9 +52,11 @@ export default function ({ navigation, route }) {
 
   const ResopnseSMS = async (code) => {
     try {
+      navigation.setParams({ status: false })
       await confirm.confirm(code);
     } catch (error) {
-      return error.code;
+      navigation.setParams({ status: true })
+      throw error;
     }
   };
 

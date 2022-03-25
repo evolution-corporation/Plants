@@ -8,13 +8,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
-  Animated,
 } from 'react-native';
 import { InfoWhiteCheck, InfoGreenCheck, InfoWhiteCross } from './assets';
-import badWords from 'bad-words';
 import { database, i18n } from '~services';
-
-const Filter = new badWords({ placeHolder: '*' });
 
 export default function ({ style, setPermision, initialLogin, setLogin }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -72,6 +68,7 @@ export default function ({ style, setPermision, initialLogin, setLogin }) {
   let timer = null;
   const check = async (_login) => {
     setIsLoading(true);
+    setPermision(false);
     _setLogin(_login);
     setLogin(_login);
     if (_login.replace(' ', '') == '' || _login.length <= 2)

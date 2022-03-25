@@ -48,7 +48,7 @@ export default function ({ route, navigation }) {
                 ref={scroll}
                 style={styles.background}
                 contentContainerStyle={{ paddingBottom: 50 }}
-                pagingEnabled={true}
+                // pagingEnabled={true}
                 showsVerticalScrollIndicator={false}
             >
                 <AskedButton onChange={(payload)=>dispatch({ type: 'Asked#1', payload })} text={{ title: i18n.t('4ba851d2-71a6-4375-8cfd-ea32c6db7afe'), topButton: i18n.t('Yes'), bottomButton: i18n.t('register') }} />
@@ -65,9 +65,10 @@ export default function ({ route, navigation }) {
                         <AskedButton onChange={(payload)=> {if (payload) navigation.navigate('Nurseries', { screen: 'NurseriesList', params: { coordinate: route.params?.coordinate } }); dispatch({ type: 'Asked#3', payload })}} text={{ title: i18n.t('88e306de-0678-4dcb-bb3a-a40129d68772'), topButton: i18n.t('3ed8ca1b-1191-4631-9b75-dbe1b3cccc23'), bottomButton: i18n.t('bca7b99a-06b1-46b1-b583-e2d28a88b502') }} fullWidth={'all'}/>
                 }
                 {
-                    state.asked3 != undefined && route.params?.coordinate ? 
-                    <AskedButton onChange={createReservePoint} text={{ title: i18n.t('8c66baf3-c1e1-4056-9248-b879f5ab81b4'), topButton: i18n.t('Yes'), bottomButton: i18n.t('416e9830-724d-401e-89e5-20010c1b44f9') }} fullWidth={'bottom'}/>
-                    : null
+                    state.asked3 == undefined ? null :
+                    route.params?.coordinate ? 
+                    <AskedButton onChange={createReservePoint} text={{ title: i18n.t('8c66baf3-c1e1-4056-9248-b879f5ab81b4'), topButton: i18n.t('Yes'), bottomButton: i18n.t('416e9830-724d-401e-89e5-20010c1b44f9') }} fullWidth={'bottom'}/> : 
+                    <TextAndImageAndButton textTitle={i18n.t('ee5d22fc-188b-4e73-a481-35dfac3ef6c4')} textButton={i18n.t('e08b935f-ecb5-4d12-8b3b-e2f3a21f9be3')} image={<Image source={require('~assets/NoPlant.png')} style={styles.image}/>} onPress={()=>navigation.navigate('PlantMap')} />
                 }
                 {
                     state.asked4 == undefined ? null :

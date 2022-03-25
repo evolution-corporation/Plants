@@ -20,6 +20,7 @@ export default function ({ initialLogin, onChange, style, setPermission }) {
   };
 
   const check = async (_login) => {
+    _login = _login.toLowerCase()
     if (isFocused) {
       setPermission(false);
       setStatus(true);

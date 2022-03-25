@@ -5,7 +5,7 @@ export default createReducer({}, (builder) => {
   builder.addCase(sigIn, (state, action) => {
     return {...action.payload, ...state};
   });
-  builder.addCase(sigOut, (state, action) => {
+  builder.addCase(sigOut.fulfilled, (state, action) => {
     return null;
   });
   builder.addCase(editUserData.fulfilled, (state, action) => {

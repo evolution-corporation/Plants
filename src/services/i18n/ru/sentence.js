@@ -19,10 +19,10 @@ const translate = {
   '87f81039-b0b8-4c9f-9c03-dc592c3ac004': ({
     openPolitikaKonfidentsialnosti,
     openPolzovatelskoeSoglashenie,
-    styles,
+    style,
   }) => (
-    <Text>
-      Нажимая на ”Завершить регистрацию”, вы принимаете <Pressable onPress={openPolzovatelskoeSoglashenie}><Text>пользовательское соглашение</Text></Pressable> и <Pressable onPress={openPolitikaKonfidentsialnosti}><Text>политику конфиденциальности сервиса</Text></Pressable>
+    <Text style={style}>
+      Нажимая на ”Завершить регистрацию”, вы принимаете <Pressable onPress={openPolzovatelskoeSoglashenie} style={{ height: 12 }}><Text style={style}>пользовательское соглашение</Text></Pressable> и <Pressable onPress={openPolitikaKonfidentsialnosti} style={{ height: 12 }}><Text style={style}>политику конфиденциальности сервиса</Text></Pressable>
     </Text>
   ),
   'cb8302c3-2ae6-4b4c-bc4f-511a0827fec3': 'Введите ваш номер телефона',
@@ -42,8 +42,8 @@ const translate = {
   '920be39f-29a2-43ba-98db-30ca64171938': 'Политика конфендоциальности',
   '5cf19df7-de96-4aae-9745-65f097af0961': 'Пользовательское соглашение',
   '7017c6eb-a3f7-4745-8b96-d2732a524d1e': 'Ваш адрес >',
-  '1e765936-736f-4ba1-90c0-71378d72de0a': 'Загаловок Выхода',
-  '82da3b15-c96b-455f-aed3-e2ed370f31fa': 'Текст Выхода',
+  '1e765936-736f-4ba1-90c0-71378d72de0a': 'Выйти из аккаунта',
+  '82da3b15-c96b-455f-aed3-e2ed370f31fa': 'Вы действительно хотите выйти из аккаунта',
   'dce5d009-ca96-4e18-ae0c-00f04524d230': 'Установить статус',
   '892738fb-7086-47df-87d2-ad5e20fa0379': 'с. ш.',
   'e11e25b7-0958-4e46-8889-63b208ea34a1': 'ю. ш.',

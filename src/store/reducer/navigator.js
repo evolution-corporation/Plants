@@ -17,7 +17,7 @@ export default createReducer(
       state.navigation = 'auth';
       state.isFirstLoading = false;
     });
-    builder.addCase(sigOut, (state, action) => {
+    builder.addCase(sigOut.fulfilled, (state, action) => {
       state.navigation = 'noAuth';
       state.isFirstLoading = false;
     });

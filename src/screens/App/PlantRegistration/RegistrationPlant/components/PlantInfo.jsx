@@ -1,12 +1,12 @@
-import React, { useState, useEffect, memo } from 'react';
-import { View, Text, StyleSheet, Platform, Image, Dimensions, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
+import React, { memo } from 'react';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { PlantImageSmall, TextHref } from '~components'
 import { i18n } from '~services';
 import { InputMessage } from './dump'
 
-export function PlantInfo ({ style }) {
+export function PlantInfo ({ style, onClick }) {
   
   const plant = useSelector(state => state.plant)
   const compact = useSelector((state) => state.navigator.compact);
@@ -55,25 +55,16 @@ export function PlantInfo ({ style }) {
 
     return (
       <View style={[style, styles.background]}>
-          <View style={styles.textInfo}>
-            <View style={styles.main}>
-              <Text style={styles.name}>{plant.name}</Text>
-              <Text style={styles.text}>
-                {i18n.t('71b08c04-7030-11ec-90d6-0242ac120003')}
-              </Text>
-            </View>
-            <PlantImageSmall
-              type={plant.type}
-              style={{ transform: [{ scale: 2 }] }}
-            />
+        <View style={styles.textInfo}>
+          <View style={styles.main}>
+            <Text style={styles.name}>{plant.name}</Text>
+            <Text style={styles.text}>{i18n.t('71b08c04-7030-11ec-90d6-0242ac120003')}</Text>
           </View>
-          <InputMessage photo={plant.photo} style={{ flexGrow: 1 }}>
-            <TextHref
-              event={() => navigation.navigate('CreatePhoto')}
-              style={styles.onChangeText}
-              text={i18n.t('toChange')}
-            />
-          </ InputMessage>
+          <PlantImageSmall type={plant.type} style={{ transform: [{ scale: 2 }] }} />
+        </View>
+        <InputMessage photo={plant.photo} style={{ flexGrow: 1 }}>
+          <TextHref event={onClick} style={styles.onChangeText} text={i18n.t('toChange')} />
+        </InputMessage>
       </View>
     );
 }

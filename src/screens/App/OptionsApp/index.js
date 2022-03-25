@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Switch, Alert } from 'react-native' 
-import { i18n, database } from '~services'
+import { i18n } from '~services'
 import { BaseButtonOption, DropList, SelectLanguage, SelectWidgets } from './components'
 import { User, Language, Widgets, Exit, Info } from './assets'
 import { useDispatch } from 'react-redux'
@@ -49,7 +49,7 @@ export default function ({ navigation, route }) {
                             Alert.alert(
                                 i18n.t('1e765936-736f-4ba1-90c0-71378d72de0a'),
                                 i18n.t('82da3b15-c96b-455f-aed3-e2ed370f31fa'), 
-                                [ { text: i18n.t('cancel') }, { text: i18n.t('exit'), onPress: database.exitAccount } ], 
+                                [ { text: i18n.t('cancel') }, { text: i18n.t('exit'), onPress: () => dispatch(actions.sigOut()) } ], 
                                 { cancelable: true })
                         }/>
             </View>

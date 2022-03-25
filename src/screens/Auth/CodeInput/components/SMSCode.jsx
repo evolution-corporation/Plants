@@ -26,15 +26,7 @@ export default function ({ style, event }) {
       listRef[index + 1].current.focus();
     } else {
       event(code.toString().replace(/[^0-9]/g, '')).catch((status) => {
-        if (status == 'auth/invalid-verification-code') {
-          alert('Код введен не верно');
-          listRef.map((item) => {
-            item.current.clear();
-          });
-          listRef[0].current.focus();
-        } else {
-          console.error('ERORR___:' + status);
-        }
+        alert(status)
       });
     }
   };

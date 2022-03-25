@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { i18n, geocoding } from '~services';
 
 export default function ({ coordinate, style, adress }) {
   // const [adress, setAddress] = useState({});
+  const widthScreen = Dimensions.get('window').width
   const styles = StyleSheet.create({
     background: {
       backgroundColor: '#FFFFFF',
-      height: 50,
+      maxWidth: widthScreen - 150,
+      minHeight: 50,
       borderRadius: 25,
       paddingLeft: 23,
       paddingRight: 23,
       alignItems: 'center',
       justifyContent: 'center',
+
     },
     titleAddress: {
       color: '#75B904',
@@ -27,6 +30,7 @@ export default function ({ coordinate, style, adress }) {
       fontWeight: '500',
       fontSize: 13,
       lineHeight: 16,
+      width: '100%'
     },
   });
   // var isActivate = true;

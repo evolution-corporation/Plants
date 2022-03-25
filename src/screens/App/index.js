@@ -17,11 +17,14 @@ import OptionsApp from './OptionsApp';
 import AboutUs from './AboutUs'
 import ChatList from './ChatList.jsx'
 import Chat from './Chat.jsx'
+import { useSelector } from 'react-redux';
 // import EditProfile from './Social/EditProfile';
 
 const { Group, Navigator, Screen } = createNativeStackNavigator();
 
 export default function ({}) {
+  const user = useSelector(state => state.user)
+
   const styles = StyleSheet.create({
   buttonGoBackInCircule: {
     alignItems: 'center',
@@ -190,7 +193,19 @@ export default function ({}) {
           headerStyle: styles.greenHeader,
           headerTitleStyle: styles.greenHeaderTitle,
           headerTitleAlign: 'center',
-          headerTitle: ()=> <UserHeaderInfo name={route.params.name} photo={route.params.photo} uid={route.params.userId}/>,
+          headerTitle: ()=> {
+            if (route.params.members) {
+              if (route.params.members.length == 2) {
+                const interlocutor = route.params.members.filter(uid => uid != user.uid)[0]
+                return(<UserHeaderInfo name={route.params.name} photo={route.params.photo} uid={interlocutor}/>)
+              } else {
+                return null
+              }
+            } else {
+              return(<UserHeaderInfo name={route.params.name} photo={route.params.photo} uid={route.params.userId}/>)
+            }
+            
+          },
           headerLeft: () => <BackArrow color={'white'} />,
           headerRight: ()=> null
         })}

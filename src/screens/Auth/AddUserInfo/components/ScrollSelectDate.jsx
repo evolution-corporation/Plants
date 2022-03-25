@@ -3,23 +3,22 @@ import { View, Text, StyleSheet } from 'react-native';
 import { SelectScrollDate } from './dump';
 import { i18n } from '~services';
 
-monthList = [
-  i18n.t('jan'),
-  i18n.t('feb'),
-  i18n.t('march'),
-  i18n.t('apr'),
-  i18n.t('may'),
-  i18n.t('june'),
-  i18n.t('july'),
-  i18n.t('aug'),
-  i18n.t('sep'),
-  i18n.t('oct'),
-  i18n.t('nov'),
-  i18n.t('dec'),
-];
-
 export default function ({ setDate, style }) {
   const [age, setAge] = useState(16);
+  const monthList = [
+    i18n.t('jan'),
+    i18n.t('feb'),
+    i18n.t('march'),
+    i18n.t('apr'),
+    i18n.t('may'),
+    i18n.t('june'),
+    i18n.t('july'),
+    i18n.t('aug'),
+    i18n.t('sep'),
+    i18n.t('oct'),
+    i18n.t('nov'),
+    i18n.t('dec'),
+  ];
   //const [listYear, setListYear] = useState([])
   const toDay = new Date();
   toDay.setHours(0, 0, 0, 0);

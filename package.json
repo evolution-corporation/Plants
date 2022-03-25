@@ -1,6 +1,6 @@
 {
   "name": "plant",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -10,13 +10,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@notifee/react-native": "^5.0.2",
     "@react-native-async-storage/async-storage": "^1.15.17",
     "@react-native-firebase/app": "^14.7.0",
     "@react-native-firebase/app-check": "^14.7.0",
     "@react-native-firebase/auth": "^14.7.0",
     "@react-native-firebase/firestore": "^14.7.0",
-    "@react-native-firebase/messaging": "^14.7.0",
     "@react-native-firebase/storage": "^14.7.0",
     "@react-native-google-signin/google-signin": "^7.0.4",
     "@react-navigation/devtools": "^6.0.5",

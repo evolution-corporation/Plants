@@ -4,18 +4,20 @@ import {
   Text,
   StyleSheet,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
+  Modal
 } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { ParkCityBackground, ColorButton } from '~components';
-import { i18n, payment } from '~services';
+import { i18n, payment, image } from '~services';
 import { actions } from '~store'
 import { PriceContainer, PlantInfo } from './components';
 
 
 export default function ({ navigation, route }) {
+  const [isOpenCamera, setIsShowCamera] = useState(false)
   const [price, setPrice] = useState({price: 0, currency: 'RUB'});
   const headerHeight = useHeaderHeight();
   const dispatch = useDispatch()
@@ -84,9 +86,21 @@ export default function ({ navigation, route }) {
     </ParkCityBackground>
   )
 
+  if (isOpenCamera) {
+    return (
+      <image.Camera
+        onChange={(photo) => {
+          dispatch(actions.addPlantData({ photo }));
+          setIsShowCamera(false)
+        }}
+        onCancel={()=>{setIsShowCamera(false)}}
+      />
+    );
+  }
+
   return (
     <ParkCityBackground style={styles.background} headerHeight={headerHeight}>
-      <PlantInfo style={styles.plantInfoRegistry} />
+      <PlantInfo style={styles.plantInfoRegistry} onClick={()=>{setIsShowCamera(true)}} />
       <View style={{ width: '100%', height: 200 }}>
         <Text style={styles.bottomView_topText}>
           {i18n.t('764b509f-ffa5-4647-8130-064430f45bf4')}

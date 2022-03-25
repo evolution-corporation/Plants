@@ -7,7 +7,7 @@ import { actions } from '~store'
 
 export default function ({ photo, style, children }) {
   const [isShowMessageInput, setIsShowMessageInput] = useState(false);
-  const [message, setMessage] = useState('')
+  const message = useSelector(state => state.plant.message);
   const compact = useSelector(state => state.navigator.compact)
   const dispatch = useDispatch()
   
@@ -89,9 +89,9 @@ export default function ({ photo, style, children }) {
                 value={message}
                 style={[styles.messageInput]}
                 placeholder={i18n.t('b6d70a88-7030-11ec-90d6-0242ac120003')}
-                onChangeText={setMessage}
+                onChangeText={(text)=>dispatch(actions.addPlantData({ message: text }))}
                 maxLength={240}
-                onBlur={() => dispatch(actions.addPlantData({ message }))}
+                // onBlur={() => dispatch(actions.addPlantData({ message }))}
               />
               <Text style={styles.textLengt}>{message.length} / 240</Text>
             </View>
@@ -121,11 +121,11 @@ export default function ({ photo, style, children }) {
       {children}
       <TextInput
         style={[styles.textInput]}
-        onChangeText={setMessage}
+        onChangeText={(text) => dispatch(actions.addPlantData({ message: text }))}
         placeholder={i18n.t('b6d70a88-7030-11ec-90d6-0242ac120003')}
         placeholderTextColor={'#FFFFFF'}
         maxLength={240}
-        onBlur={() => dispatch(actions.addPlantData({ message }))}
+        // onBlur={() => dispatch(actions.addPlantData({ message }))}
       />
     </View>
   );

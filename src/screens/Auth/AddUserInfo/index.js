@@ -51,7 +51,6 @@ export default function ({ navigation, route }) {
     bottomViewText: {
       color: '#CBE1A8',
       fontSize: 11,
-      lineHeight: 13,
       textAlign: 'center',
       fontWeight: '600',
       fontFamily: Platform.OS == 'android' ? 'Roboto-Medium' : 'System',
@@ -87,7 +86,7 @@ export default function ({ navigation, route }) {
                 document: 'polzovatelskoeSoglashenie',
               });
             },
-            styles: styles.bottomViewText,
+            style: styles.bottomViewText,
           })}
         </Text>
       </View>

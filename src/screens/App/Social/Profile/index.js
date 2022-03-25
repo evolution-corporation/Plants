@@ -42,6 +42,7 @@ export function Profile ({ route, navigation }) {
       database.getUserData(route.params.uid).then(payload => {
         if (isFocused) {
           dispatch({ type: 'setUser', payload })
+          navigation.setOptions({ title: payload.login })
         }
       })
     } else {

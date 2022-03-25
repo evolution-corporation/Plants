@@ -1,7 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import messaging from '@react-native-firebase/messaging';
-import uuid from 'react-native-uuid';
+
 
 // import { Account } from './models'
 class Tables {
@@ -239,7 +238,8 @@ class ChatsTable extends Tables {
             lastMessage: this.decryptoText(data.lastMessageText, doc.id),
             id: doc.id,
             name: chat.name,
-            photo: chat.photo
+            photo: chat.photo,
+            members: data.members
           })
         })
       )
@@ -550,8 +550,8 @@ async function findUser({ name }) {
 }
 
 
-function exitAccount() {
-  auth().signOut();
+async function exitAccount() {
+  await auth().signOut();
 }
 
 

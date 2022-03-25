@@ -70,7 +70,7 @@ export default function ({ navigation, route }) {
                   />
                   <View>
                     <Text style={styles.text}>{item.name}</Text>
-                    <Text>{item.lastMessage.length > 20 ? `${item.lastMessage.slice(0, 20)}..` : item.lastMessage}</Text>
+                    <Text numberOfLines={20}>{item.lastMessage}</Text>
                   </View>
                 </TouchableOpacity>
               )
