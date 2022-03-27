@@ -2,9 +2,8 @@ import * as RNLocalize from 'react-native-localize';
 import i18n from 'i18n-js';
 import asyncStorage from '../asyncStorge.js'
 import ru from './ru';
-import en from './en'
 
-i18n.translations = { ru, en };
+i18n.translations = { ru };
 i18n.setListner = (callback) => {i18n.onChangeLanguage = callback}
 
 i18n.setLanguage = async (language) => {

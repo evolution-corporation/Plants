@@ -162,6 +162,10 @@ async function PhotoConverterBase64({ uri }) {
   }
 }
 
+async function PhotoConverterToBlob({ uri, base64 }) {
+  
+}
+
 export default {
   Camera: Camera_,
   openLibrary,
