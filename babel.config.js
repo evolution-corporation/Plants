@@ -22,9 +22,13 @@ module.exports = {
           '~services': './src/services',
           '~store': './src/store',
           '~screens': './src/screens',
-          '~assets': './src/assets'
+          '~assets': './src/assets',
+          '~models': './src/models',
+          '~i18n': './src/i18n',
+          '~constant': './src/constant'
         },
       },
+      "@babel/plugin-transform-typescript"
     ],
   ],
 };

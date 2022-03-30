@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "jsx": "react-native",
-    "lib": ["es2017"],
+    "lib": ["es2019"],
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
@@ -13,11 +13,14 @@
     "baseUrl": "./",
     "paths": {
       "~components": ["./src/components"],
-      "~services": ["./src/services"],
+      "~services/*": ["./src/services/*"],
       "~store": ["./src/store"],
-      "~screens": ["./src/screens"],
-      "~assetc": ["./src/assets"],
-      "~containers": ["./src/containers"]
+      "~screens/*": ["./src/screens/*"],
+      "~assets/*": ["./src/assets/*"],
+      "~containers": ["./src/containers"],
+      "~models/*": ["./src/models/*"],
+      "~i18n": ["./src/i18n"],
+      "~constant": ["./src/constant"]
     }
   },
   "exclude": [
@@ -25,5 +28,6 @@
     "babel.config.js",
     "metro.config.js",
     "jest.config.js"
-  ]
+  ],
+  
 }

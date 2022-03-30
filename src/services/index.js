@@ -1,4 +1,4 @@
-export { default as i18n } from './i18n';
+export { default as i18n } from '../i18n';
 export { default as computerVision } from './computerVision';
 export { default as database } from './database';
 export { default as asyncStorage } from './asyncStorge';

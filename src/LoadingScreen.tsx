@@ -1,9 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, StatusBar, ActivityIndicator, Text } from 'react-native';
-import { BigGreenTreeLogo, EvolutionLogo } from './assets';
 
-export default function () {
-  const styles = StyleSheet.create({
+import AppLogo from '~assets/AppLogo_Green.svg'
+import EvolutionLogo from '~assets/EvolutionLogo_Green.svg'
+import { LoadingStatus } from '~constant'
+import type { FC } from 'react'
+
+export type Props = {
+  status: LoadingStatus.NOT_LOADING | LoadingStatus.LOADING
+}
+
+const styles = StyleSheet.create({
     background: {
       flex: 1,
       backgroundColor: '#FFFFFF',
@@ -26,16 +33,27 @@ export default function () {
       marginBottom: 9
     }
   });
+
+const Loading: FC<Props> = ({ status = LoadingStatus.NOT_LOADING }) => {
   StatusBar.setBackgroundColor('#FFFFFF');
   StatusBar.setBarStyle('dark-content');
   return (
     <View style={styles.background}>
-      <BigGreenTreeLogo />
-      {/* <ActivityIndicator
+      <AppLogo />
+      {
+        status == LoadingStatus.LOADING ? 
+        <ActivityIndicator
+          color={'#86B738'}
+          size={'large'}
+          style={styles.activityIndicator}
+        />
+        : null
+      }
+      <ActivityIndicator
         color={'#86B738'}
         size={'large'}
         style={styles.activityIndicator}
-      /> */}
+      />
       <View style={styles.bottomLogo}>
         <Text style={styles.text}>from</Text>
         <EvolutionLogo />
@@ -43,3 +61,5 @@ export default function () {
     </View>
   );
 }
+
+export default Loading

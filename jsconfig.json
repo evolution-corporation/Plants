@@ -5,9 +5,12 @@
       "~components": ["./src/components"],
       "~services": ["./src/services"],
       "~store": ["./src/store"],
-      "~screens": ["./src/screens"],
-      "~assetc": ["./src/assets"],
-      "~containers": ["./src/containers"]
+      "~screens": ["./src/screens/*"],
+      "~assets/*": ["./src/assets/*"],
+      "~containers": ["./src/containers"],
+      "~models/*": ["./src/models/*"],
+      "~i18n": ["./src/i18n"],
+      "~constant": ["./src/constant"]
     }
   },
   "exclude": ["node_modules", "dist"]

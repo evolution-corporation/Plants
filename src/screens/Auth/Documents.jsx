@@ -6,17 +6,14 @@ export default function ({ navigation, route }) {
   return (
     <View style={{ flex: 1 }}>
       <WebView
-        style={{ flex: 1 }}
+        style={{ flex: 1, maxWidth: Dimensions.get('window').width, fontSize: 20 }}
         source={{
-          uri: `${
-            Platform.OS === 'android' ? 'file:///android_asset' : ''
-          }/documents/${
+          uri: `${Platform.OS === 'android' ? 'file:///android_asset' : ''}/documents/${
             route.params.document == 'politikaKonfidentsialnosti'
               ? 'politikaKonfidentsialnostiDlya'
               : 'polzovatelskoeSoglashenieDlya'
           }.html`,
         }}
-        style={{ maxWidth: Dimensions.get('window').width, fontSize: 20 }}
       />
     </View>
   );
