@@ -2,7 +2,7 @@ import React, { useEffect, memo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { database, asyncStorage, i18n } from '~services';
 import { actions } from '~store';
-import { Auth, AddUserInfo } from './Auth';
+import { Auth, AddUserInfo } from './userAuthorization';
 import Splash from './Splash';
 import App from './App';
 import { useNavigation } from '@react-navigation/native';

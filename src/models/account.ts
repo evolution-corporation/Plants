@@ -5,7 +5,8 @@ import validator from 'validator'
 
 import Plant from './plant'
 import User from './user'
-import { AuthStatus, AuthAccountData, AuthType } from './type'
+import { AuthAccountData, AuthType } from './type'
+import { AuthStatus } from '~constant'
 
 
 import type { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
@@ -19,8 +20,8 @@ interface PhoneAuth {
 interface AccountState {
     authStatus: AuthStatus,
     account?: Account,
-    setAccount: Function
-    delAccount: Function
+    setAccount: Function,
+    delAccount: Function,
 }
 
 export const accountState: AccountState = {

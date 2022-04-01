@@ -4,15 +4,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BackArrow, UserHeaderInfo, SearchButton, SearchInput } from '~components'
 import { i18n } from '~services'
 
-import Main from './Main';
-import Social from './Social';
+import Main from '../Main';
+import Social from '../Social';
 import PlantRegistration from './PlantRegistration';
 import PlantCard from './PlantCard';
 import MarkerMap from './MarkerMap';
 import HelpPlant from './HelpPlant';
-import PlantMap from './PlantMap';
+import PlantMap from '../PlantMap';
 import PlantReserved from './PlantReserved';
-import Nurseries from './Nurseries'
+import Nurseries from '../nurseries'
 import OptionsApp from './OptionsApp';
 import AboutUs from './AboutUs'
 import ChatList from './ChatList.jsx'

@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Platform } from 'react-native'
 import { i18n } from '~services'
 import { ParkAndBigTree, TextHref, SelectElemet } from '~components'
 import { ShowList } from './components'
-import ColorButton from 'src/components/dump/buttons/ColorButton';
+import ColorButton from 'src/elements/buttons/ColorButton';
 
 export default function ({ navigation, route }) {
     const image = [

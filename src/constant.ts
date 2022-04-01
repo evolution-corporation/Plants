@@ -12,3 +12,15 @@ export enum StorageKey {
 export enum Language {
   ru = 'ru',
 }
+
+export enum AuthStatus {
+    NOT_DEFINITELY = 'notDefinitely',
+    AUTHORIZED = 'authorized',
+    NO_AUTHORIZED = 'noAuthorized',
+}
+
+export enum FirstLoading {
+  NOT_DEFINITELY,
+  TRUE,
+  FALSE
+}

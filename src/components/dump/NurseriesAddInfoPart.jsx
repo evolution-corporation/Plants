@@ -1,7 +1,7 @@
 import React, { memo, useRef, useEffect, useReducer } from 'react';
 import { View, StyleSheet, Text, Animated, Platform } from 'react-native';
 import { i18n } from '~services';
-import { ColorButton, EditButton } from './buttons'
+import { ColorButton, EditButton } from '../../elements/buttons'
 
 export function NurseriesAddInfoPart({ hideButton, style, title, children, hiddenTitle=false, onPress, textButton=i18n.t('next'), visable=true, permission=true, isEdit=false, editMode=true, onPressEdit }) {
     const show = useRef(new Animated.Value(0)).current

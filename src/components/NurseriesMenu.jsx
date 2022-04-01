@@ -1,8 +1,8 @@
 import React, { memo, useRef, useState, useEffect } from 'react'
 import { Animated, StyleSheet, View, TouchableOpacity, Text, Platform, Pressable, Dimensions, Modal } from 'react-native'
-import Leave from '~assets/Leave.svg'
-import Filter from '~assets/Filter.svg'
-import Menu from '~assets/Menu.svg'
+import Leave from '~assets/svg/Leave.svg'
+import Filter from '~assets/svg/Filter.svg'
+import Menu from '~assets/svg/Menu.svg'
 import { i18n } from '~services'
 import { useNavigation } from '@react-navigation/native'
 

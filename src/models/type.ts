@@ -86,10 +86,3 @@ export enum AuthType {
 }
 
 export type AuthAccountData = { type:  AuthType.PHONE, phone: string } | { type: AuthType.GOOGLE, googleId: string } 
-
-export enum AuthStatus {
-    NOT_DEFINITELY = 'notDefinitely',
-    AUTHORIZED = 'authorized',
-    NO_AUTHORIZED = 'noAuthorized',
-}
-

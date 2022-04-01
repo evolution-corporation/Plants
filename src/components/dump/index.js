@@ -1,5 +1,4 @@
-export * from './buttons';
-export * from './background';
+export * from '../../elements/buttons';
 export * from './textInput';
 
 export { default as SelectElemet } from './SelectElemet';

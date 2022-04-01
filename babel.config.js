@@ -25,7 +25,12 @@ module.exports = {
           '~assets': './src/assets',
           '~models': './src/models',
           '~i18n': './src/i18n',
-          '~constant': './src/constant'
+          '~constant': './src/constant',
+          '~routes': './src/routes',
+          '~elements': './src/elements',
+          '~icons': './src/elements/icons',
+          '~layouts': './src/layouts',
+          '~globalStyle': './src/globalStyle'
         },
       },
       "@babel/plugin-transform-typescript"

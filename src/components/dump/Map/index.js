@@ -7,7 +7,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import MapStyle from './dump/assets/mapStyle.json'
 
-import { BackArrow } from '../buttons';
+import { BackArrow } from '../../../elements/buttons';
 
 export function Map ({ editCoordinate, coordinate, startUserPosition = false , markers = [], compact = false, editAdress=(adress)=>{}, isReadyHook=(status)=>{} }) {
   const map = useRef(null);

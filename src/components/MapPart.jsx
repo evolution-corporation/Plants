@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions, Text, Platform } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import { ColorButton } from './dump'
 import { i18n } from '~services'
-import ReservMarker from '~assets/ReservMarker.svg'
+import ReservMarker from '~assets/svg/ReservMarker.svg'
 
 export default function({ coordinate={ latitude: 56.838110 ,longitude: 60.604360 }, title, onPress }) {
 
