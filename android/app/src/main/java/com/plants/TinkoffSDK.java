@@ -28,7 +28,8 @@ public class TinkoffSDK extends ReactContextBaseJavaModule {
                     case (Activity.RESULT_OK): 
                         ResultPromise.resolve("onSuccess");
                         break;
-                    case (RESULT_ERROR): 
+                    case (RESULT_ERROR):
+                        // ResultPromise.resolve(resultCode);
                         if (data != null) {
                             ResultPromise.resolve(TinkoffAcquiring.RESULT_ERROR);
                         }
@@ -87,7 +88,7 @@ public class TinkoffSDK extends ReactContextBaseJavaModule {
     @ReactMethod
     public void openTerminal(Double Price, String Title, String Description, String OrderId, String TerminalKey, String PublickKey, String UserUID, Promise promise) {
         final TinkoffAcquiring tinkoffAcquiring = new TinkoffAcquiring(TerminalKey, PublickKey);
-        AcquiringSdk.AsdkLogger.setDeveloperMode(true);
+        // AcquiringSdk.AsdkLogger.setDeveloperMode(true);
         final Activity activity = getCurrentActivity();
         if (activity != null) {
             ResultPromise = promise;
