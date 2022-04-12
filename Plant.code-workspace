@@ -4,5 +4,24 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "pwa-node",
+				"request": "launch",
+				"name": "Launch Program",
+				"skipFiles": [
+					"<node_internals>/**"
+				],
+				"program": "/mnt/hdd/Projects/Evolution/Plants/src/core/screens/AuthorizationWithPhone.tsx",
+				"__workspaceFolder": "/mnt/hdd/Projects/Evolution/Plants/src/core/screens",
+				"outFiles": [
+					"${workspaceFolder}/**/*.js"
+				]
+			},
+			
+		]
+	}
 }

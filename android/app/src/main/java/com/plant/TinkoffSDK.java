@@ -1,4 +1,4 @@
-package com.plant;
+package com.plants;
 
 import android.content.Intent;
 import android.app.Activity;

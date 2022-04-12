@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "command": "npx react-native start",
+      "name": "React Native start",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "name": "Run Android Hermes - Experimental",
+      "request":"launch",
+      "type":"reactnativedirect",
+      "cwd":"${workspaceFolder}",
+      "enableDebug":false,
+      "platform":"android"
+    },
+    {
+      "name": "Attach to Direct iOS - Experimental",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnativedirect",
+      "request": "attach",
+      "platform": "ios",
+      "useHermesEngine": false,
+      "port": 9221,
+      "isDynamic": true
+    }
+  ]
+}

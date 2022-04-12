@@ -1,0 +1,36 @@
+{
+  "plants" : [
+    "abies.alba",
+    "abrus.precatorius",
+    "acacia.catechu",
+    "acacia.senegal",
+    "achillea.millefolium",
+    "acocanthera.abyssinica",
+    "aconitum.ferox",
+    "aconitum.napellus",
+    "acorus.calamus", 
+    "adonis.vernalis",
+    "aethusa.cynapium"
+  ],
+  "nick_word":  [
+    "forest",
+    "tree",
+    "green",
+    "Earth",
+    "leaflet",
+    "big",
+    "small",
+    "white",
+    "black",
+    "water",
+    "sun",
+    "fire",
+    "flower"
+  ],
+  "bans": [
+    "niger",
+    "bitch",
+    "suka",
+    "pidr"
+  ]
+}
