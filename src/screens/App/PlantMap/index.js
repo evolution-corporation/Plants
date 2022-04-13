@@ -87,6 +87,7 @@ export function PlantMap({ navigation, route }) {
                 editCoordinate={(payload)=>dispatch({ type: 'setCoordinate', payload })}
                 markers={useMemo(() => ([...state.markers, ...reserveMarkers]), [state.markers, reserveMarkers])}
                 startUserPosition={true}
+                is3d={true}
             />
             <View style={[styles.countPlant, { justifyContent: 'center' }]}>
                 <CountPlant countPlant={state.markers.length} />

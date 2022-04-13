@@ -7,3 +7,4 @@ export { default as Indicator } from './Indicator.svg';
 export { default as GreenTree } from './GreenTree.svg';
 export { default as GrayTree } from './GrayTree.svg';
 export { default as MyLocation } from './MyLocation.svg'
+export { default as Icon3D } from './3d.svg'

@@ -1,26 +1,36 @@
 import React, { useRef, useState, memo, useEffect, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Marker, Indicator, Filter, Adress, MyLocation } from './dump';
 //import MapView from "@bam.tech/react-native-component-map-clustering"
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import MapStyle from './dump/assets/mapStyle.json'
+import MapStyle from './dump/assets/mapStyle.json';
+import { Icon3D } from './dump/assets';
 
 import { BackArrow } from '../buttons';
 
-export function Map ({ editCoordinate, coordinate, startUserPosition = false , markers = [], compact = false, editAdress=(adress)=>{}, isReadyHook=(status)=>{} }) {
+export function Map({
+  editCoordinate,
+  coordinate,
+  startUserPosition = false,
+  markers = [],
+  compact = false,
+  editAdress = (adress) => {},
+  isReadyHook = (status) => {},
+  is3d = false,
+}) {
   const map = useRef(null);
   var timer = null;
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const headerHeight = useHeaderHeight();
   const [userCoordinate, setUserCoordinate] = useState();
-  const [mapIsReady, setMapIsReady] = useState(false)
+  const [mapIsReady, setMapIsReady] = useState(false);
   const [isChangedCoordinate, setIsChangedCoordinate] = useState(false);
   const [filter, setFilter] = useState(null);
-  const [adress, setAdress] = useState({  })
-  const isFocused = useIsFocused()
-  let isActivate = true
+  const [adress, setAdress] = useState({});
+  const isFocused = useIsFocused();
+  let isActivate = true;
   const styles = StyleSheet.create({
     map: {
       flex: 1,
@@ -38,12 +48,12 @@ export function Map ({ editCoordinate, coordinate, startUserPosition = false , m
     adress: {
       position: 'absolute',
       alignSelf: 'center',
-      top: headerHeight
+      top: headerHeight,
     },
     myLocation: {
       position: 'absolute',
       bottom: 256,
-      right: 20
+      right: 20,
     },
     buttonGoBackInCircule: {
       alignItems: 'center',
@@ -53,31 +63,45 @@ export function Map ({ editCoordinate, coordinate, startUserPosition = false , m
       borderRadius: 20,
       backgroundColor: '#86B738',
     },
+    button3d: {
+      height: 41,
+      width: 41,
+      borderRadius: 20.5,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#FFFFFF',
+      position: 'absolute',
+      right: 20,
+      bottom: 200,
+    },
   });
 
   if (startUserPosition) {
-      useEffect(()=>{
-        if (mapIsReady && userCoordinate) {
-          map.current.setCamera({ center: userCoordinate, zoom: 15 }, { duration: 500 })
-          setMapIsReady(false)
-        }
-      }, [mapIsReady, userCoordinate])
+    useEffect(() => {
+      if (mapIsReady && userCoordinate) {
+        map.current.setCamera({ center: userCoordinate, zoom: 15 }, { duration: 500 });
+        setMapIsReady(false);
+      }
+    }, [mapIsReady, userCoordinate]);
   }
 
   const getAdress = async (latitude, longitude) => {
-    const adress = await map.current.addressForCoordinate({ latitude, longitude })
-    console.log('isActivateMap', isActivate)
-    if (isActivate) {
-      setAdress(adress)
-      editAdress(adress)
+    try {
+      const adress = await map.current.addressForCoordinate({ latitude, longitude });
+      console.log('isActivateMap', isActivate);
+      if (isActivate) {
+        setAdress(adress);
+        editAdress(adress);
+      }
+    } catch (error) {
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     return () => {
-      isActivate = false
-    }
-  },[setAdress])
+      isActivate = false;
+    };
+  }, [setAdress]);
 
   return (
     <View style={styles.map}>
@@ -92,7 +116,7 @@ export function Map ({ editCoordinate, coordinate, startUserPosition = false , m
           zoom: 15,
           pitch: 1,
           heading: 1,
-          altitude: 1
+          altitude: 1,
         }}
         showsUserLocation={true}
         showsMyLocationButton={false}
@@ -110,38 +134,64 @@ export function Map ({ editCoordinate, coordinate, startUserPosition = false , m
           if (!isChangedCoordinate) {
             setIsChangedCoordinate(true);
           }
-          timer = setTimeout((state) => {
-            if (isActivate) {
-              setIsChangedCoordinate(state)
-              
-            }
-          }, 1000, false);
+          timer = setTimeout(
+            (state) => {
+              if (isActivate) {
+                setIsChangedCoordinate(state);
+              }
+            },
+            1000,
+            false,
+          );
         }}
-        onRegionChangeComplete={(coordinate) => {editCoordinate(coordinate); getAdress(coordinate.latitude, coordinate.longitude)}}
-        onMapReady={()=>{setMapIsReady(true)}}
+        onRegionChangeComplete={(coordinate) => {
+          editCoordinate(coordinate);
+          getAdress(coordinate.latitude, coordinate.longitude);
+        }}
+        onMapReady={() => {
+          setMapIsReady(true);
+        }}
         //onMapReady={()=>{console.log(userCoordinate);map.current.setCamera({ center: userCoordinate, zoom: 15 }, { duration: 500 })}}
-        onUserLocationChange={({ nativeEvent: { coordinate: { latitude, longitude } } }) => setUserCoordinate({ latitude, longitude })}>
+        onUserLocationChange={({
+          nativeEvent: {
+            coordinate: { latitude, longitude },
+          },
+        }) => setUserCoordinate({ latitude, longitude })}>
         {markers
           .filter((item) => (filter ? item.status === filter : true))
           .map((item) => (
-            <Marker
-              key={item.id.toString()}
-              marker={item}
-              all={compact}
-            />
+            <Marker key={item.id.toString()} marker={item} all={compact} />
           ))}
       </MapView>
-      <Indicator status={isChangedCoordinate} style={styles.indicator}/>
-      {
-        !compact ? <Filter style={styles.filter} onChange={setFilter} /> : null
-      }
-      <Adress coordinate={useMemo(()=>({ latitude: coordinate.latitude, longitude: coordinate.longitude }),[coordinate.latitude, coordinate.longitude])} style={styles.adress} adress={adress}/>
-      <MyLocation style={styles.myLocation} onPress={()=>map.current.setCamera({ center: userCoordinate, zoom: 15 }, { duration: 500 })} />
+      <Indicator status={isChangedCoordinate} style={styles.indicator} />
+      {!compact ? <Filter style={styles.filter} onChange={setFilter} /> : null}
+      {!is3d ? null : (
+        <TouchableOpacity
+          style={styles.button3d}
+          onPress={() => {
+            const camera = map.current.getCamera();
+            map.current.animateCamera({ ...camera, pitch: 90, zoom: 18 });
+          }}>
+          <Icon3D />
+        </TouchableOpacity>
+      )}
+      <Adress
+        coordinate={useMemo(
+          () => ({ latitude: coordinate.latitude, longitude: coordinate.longitude }),
+          [coordinate.latitude, coordinate.longitude],
+        )}
+        style={styles.adress}
+        adress={adress}
+      />
+      <MyLocation
+        style={styles.myLocation}
+        onPress={() => map.current.setCamera({ center: userCoordinate, zoom: 15 }, { duration: 500 })}
+      />
       <View style={{ height: 50, justifyContent: 'center', position: 'absolute', top: headerHeight, left: 10 }}>
-        <BackArrow goBack={navigation.goBack} style={styles.buttonGoBackInCircule}/>
+        <BackArrow goBack={navigation.goBack} style={styles.buttonGoBackInCircule} />
       </View>
     </View>
   );
 }
 
-export default memo(Map)
+export default memo(Map);
