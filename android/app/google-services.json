@@ -1,0 +1,100 @@
+{
+  "project_info": {
+    "project_number": "878799007977",
+    "project_id": "plants-336217",
+    "storage_bucket": "plants-336217.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878799007977:android:cfe785d584eb5f18da0078",
+        "android_client_info": {
+          "package_name": "com.ecorp.plants"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "878799007977-6lg224mqq1eerpfh7vehs6lsk3i165ut.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecorp.plants",
+            "certificate_hash": "2ff52c3ab8ea890e0ce750343d36c67dce7e6f73"
+          }
+        },
+        {
+          "client_id": "878799007977-pksld98dd0m9iuc4st37q4qetk5c7fmk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecorp.plants",
+            "certificate_hash": "0f4078a4b1a8d2d9d68dd0de6593f958a093f625"
+          }
+        },
+        {
+          "client_id": "878799007977-t442v7dfscib07di3p9dvvi2r11a989m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecorp.plants",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "878799007977-cj3549ni87jre2rmg4eq0hiolp08igh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0lKHzxRYFSr--dBsOh9zt2G009m6g7hg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "878799007977-cj3549ni87jre2rmg4eq0hiolp08igh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878799007977:android:58662c42c011cf73da0078",
+        "android_client_info": {
+          "package_name": "com.evolution.plants"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "878799007977-3dpefohq0ml2n3cnnu67t7nvrc4eunmo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.evolution.plants",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "878799007977-cj3549ni87jre2rmg4eq0hiolp08igh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0lKHzxRYFSr--dBsOh9zt2G009m6g7hg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "878799007977-cj3549ni87jre2rmg4eq0hiolp08igh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

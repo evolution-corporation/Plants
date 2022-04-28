@@ -1,6 +1,4 @@
-import { checkMultiple, PERMISSIONS, RESULTS, request as requestPermision} from 'react-native-permissions';
-import Geolocation from 'react-native-geolocation-service'
-import { Platform } from 'react-native'
+import * as Location from 'expo-location';
 
 const GOOGLE_MAPS_KEY = 'AIzaSyBWX3KcAZpgVMEv1L70b_CK0T7xA5PSn_4';
 
@@ -35,26 +33,19 @@ async function getCountry(coordinate) {
 }
 
 async function checkPermissions() {
-  if (Platform.OS == 'android') {
-    try {
-      const result = await checkMultiple([PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION, PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION])
-      if (result['android.permission.ACCESS_COARSE_LOCATION'] == RESULTS.DENIED)
-        result['android.permission.ACCESS_COARSE_LOCATION'] = await requestPermision(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION)
-      if (result['android.permission.ACCESS_FINE_LOCATION'] == RESULTS.DENIED)
-        result['android.permission.ACCESS_FINE_LOCATION'] = await requestPermision(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+      const result = await Location.getForegroundPermissionsAsync()
+      if (result.granted) {
+        return 'GRANTED'
+      } else {
+        return 'BLOCKED'
+      }
 
-      if (Object.values(result).includes(RESULTS.BLOCKED)) return 'BLOCKED'
-      if (Object.values(result).includes(RESULTS.DENIED)) return 'DENIED'
-      if (Object.values(result).includes(RESULTS.GRANTED)) return 'GRANTED'
-    } catch (error) {
-      return 'BLOCKED'
-    }
-  }
 }
 
 
 function getMyPosition(callback) {
-  Geolocation.getCurrentPosition((data)=>callback({ latitude: data.coords.latitude, longitude: data.coords.longitude }), console.error)
+  Location.getForegroundPermissionsAsync().then(({ coord }) =>{callback({ latitude: coord.latitude, longitude: coord.longitude })})
+
 }
 
 export default {

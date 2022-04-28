@@ -1,7 +1,6 @@
 import React, { useReducer, useEffect, memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SelectPrice, InputPrice } from './dump';
-import * as RNLocalize from 'react-native-localize';
 
 export function PriceContainer ({ style, onChange }) {
   const [state, dispatch] = useReducer(
@@ -32,7 +31,7 @@ export function PriceContainer ({ style, onChange }) {
   );
 
   useEffect(() => {
-    const userUsingCurrencies = RNLocalize.getCurrencies();
+    const userUsingCurrencies = ['RUB'];
     const appUsingCurrencies = ['RUB'];
     for (let currency of userUsingCurrencies) {
       if (appUsingCurrencies.includes(currency)) {
@@ -64,27 +63,27 @@ export function PriceContainer ({ style, onChange }) {
       flex: 1
     },
   });
-  if (state.prices.length == 0) return null;
+  if (state.prices.length === 0) return null;
 
   return (
     <View style={[style, styles.background]}>
       <SelectPrice
         price={state.prices[0]}
-        isSelected={state.price == state.prices[0] && !state.isCustomePrice}
+        isSelected={state.price === state.prices[0] && !state.isCustomePrice}
         style={styles.prices}
         currency={state.currency.symbol}
         onChange={() => selectPrice(state.prices[0])}
       />
       <SelectPrice
         price={state.prices[1]}
-        isSelected={state.price == state.prices[1] && !state.isCustomePrice}
+        isSelected={state.price === state.prices[1] && !state.isCustomePrice}
         style={styles.prices}
         currency={state.currency.symbol}
         onChange={() => selectPrice(state.prices[1])}
       />
       <SelectPrice
         price={state.prices[2]}
-        isSelected={state.price == state.prices[2] && !state.isCustomePrice}
+        isSelected={state.price === state.prices[2] && !state.isCustomePrice}
         style={styles.prices}
         currency={state.currency.symbol}
         onChange={() => selectPrice(state.prices[2])}

@@ -556,6 +556,7 @@ async function exitAccount() {
 
 
 
+
 export default {
   onAuthChanged,
   authenticateUser,

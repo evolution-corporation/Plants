@@ -4,10 +4,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { Camera, Constants } from 'expo-camera';
+import * as ImageManipulator from 'expo-image-manipulator';
+import * as ImagePicker from 'expo-image-picker';
 import RNFS from 'react-native-fs';
 import { useNavigation } from '@react-navigation/native';
 import ImageResizer from 'react-native-image-resizer';
@@ -16,12 +16,10 @@ import { Back } from './assets'
 function Camera_({ onChange, onCancel }) {
   const [permision, setPermision] = useState(false);
   const camera = useRef(null);
-  const devices = useCameraDevices();
   const navigation = useNavigation()
 
   const createPhoto = async () => {
-    const photo = await camera.current.takePhoto({ skipskipMetadata: true });
-    const base64 = await PhotoConverterBase64({ uri: photo.path });
+    const base64 = await camera.current.takePictureAsync({ base64: true });
     onChange(base64);
   };
 
@@ -29,52 +27,11 @@ function Camera_({ onChange, onCancel }) {
     onCancel();
   }
 
-  const openCamera = () => {
-    setPermision(true);
-  };
-
   const getPermisions = async () => {
-    const cameraPermission = await Camera.getCameraPermissionStatus();
-    if (cameraPermission === 'authorized') {
-      openCamera();
-      return;
+    const cameraPermission = await Camera.getCameraPermissionsAsync()
+    if (cameraPermission.granted) {
+      setPermision(true);
     }
-    if (cameraPermission === 'not-determined') {
-      const newCameraPermission = await Camera.requestCameraPermission();
-      if (newCameraPermission === 'authorized') {
-        openCamera();
-        return;
-      }
-      if (newCameraPermission === 'denied') {
-        onChange({ ERROR: 'denied' });
-        return;
-      }
-      if (newCameraPermission === 'restricted') {
-        onChange({ ERROR: 'restricted' });
-        return;
-      }
-    }
-    if (cameraPermission === 'restricted') {
-      onChange({ ERROR: 'restricted' });
-      return;
-    }
-    if (cameraPermission === 'denied') {
-      const newCameraPermission = await Camera.requestCameraPermission();
-      if (newCameraPermission === 'authorized') {
-        openCamera();
-        return;
-      }
-      if (newCameraPermission === 'denied') {
-        onChange({ ERROR: 'denied' });
-        return;
-      }
-      if (newCameraPermission === 'restricted') {
-        onChange({ ERROR: 'restricted' });
-        return;
-      }
-    }
-    onChange({ ERROR: 'undefined' });
-    return;
   };
 
   const styles = StyleSheet.create({
@@ -114,15 +71,15 @@ function Camera_({ onChange, onCancel }) {
     };
   }, [setPermision]);
 
+
   if (permision && devices.back) {
     return (
       <View style={styles.background}>
         <Camera
           ref={camera}
-          photo={true}
+          autoFocus={Constants.AutoFocus.on}
+          ratio={'16:9'}
           style={styles.camera}
-          device={devices.back}
-          isActive={true}
         />
         <TouchableOpacity style={styles.buttonBack} onPress={cancel}><Back/></TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={createPhoto} i />
@@ -137,13 +94,15 @@ function Camera_({ onChange, onCancel }) {
 }
 
 async function openLibrary({ onSelect, onCancel }) {
-  const { didCancel, assets } = await launchImageLibrary({
-    mediaType: 'photo',
+  const result = await ImagePicker.launchImageLibraryAsync({
+    allowsEditing: true,
+    base64: true,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images
   });
-  if (didCancel) {
+  if (result.didCancel) {
     onCancel();
   } else {
-    onSelect({ uri: assets[0].uri });
+    onSelect({ uri: result.uri });
   }
 }
 
@@ -153,17 +112,25 @@ async function PhotoConverterBase64({ uri }) {
       fromUrl: uri,
       toFile: `${RNFS.CachesDirectoryPath}/image.png`,
     }).promise.then(async () => {
-      const { path } = await ImageResizer.createResizedImage(`${RNFS.CachesDirectoryPath}/image.png`, 720, 720, 'JPEG', 80)
-      return await RNFS.readFile( path, 'base64', );
+      const { base64 } = await ImageManipulator.manipulateAsync(
+        `${RNFS.CachesDirectoryPath}/image.png`,
+        [{ resize: { width: 720, height: 720 } }],
+        {
+          compress: 0.8,
+          format: 'JPEG'
+        })
+      return base64
     });
   } else {
-    const { path } = await ImageResizer.createResizedImage(uri, 720, 720, 'JPEG', 80)
-    return await RNFS.readFile(path, 'base64');
+    const { base64 } = await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 720, height: 720 } }],
+      {
+        compress: 0.8,
+        format: 'JPEG'
+      })
+    return base64
   }
-}
-
-async function PhotoConverterToBlob({ uri, base64 }) {
-  
 }
 
 export default {
