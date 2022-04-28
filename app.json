@@ -1,4 +1,17 @@
 {
-  "name": "Plants",
-  "displayName": "Plants"
+  "expo": {
+    "name": "Plants",
+    "slug": "Plants",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.evolution.plants",
+      "googleServicesFile": "./google-services.fb.json"
+    },
+    "ios": {
+      "bundleIdentifier": "com.evolution.plants"
+    }
+  }
 }

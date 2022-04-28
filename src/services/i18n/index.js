@@ -1,4 +1,4 @@
-import * as RNLocalize from 'react-native-localize';
+import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import asyncStorage from '../asyncStorge.js'
 import ru from './ru';
@@ -10,12 +10,13 @@ i18n.setLanguage = async (language) => {
   if (!language) {
     language = await asyncStorage.getLanguage()
   }
-  if (!language || language == 'system') {
-    const userUsingLocalization = RNLocalize.getLocales();
+  if (!language || language === 'system') {
+    const userUsingLocalization = Localization.locales;
     const appUsingLocalization = Object.keys(i18n.translations);
+    console.log(userUsingLocalization)
     for (let languageUsingUser of userUsingLocalization) {
-      if (appUsingLocalization.includes(languageUsingUser.languageCode)) {
-        language == languageUsingUser.languageCode;
+      if (appUsingLocalization.includes(languageUsingUser)) {
+        language === languageUsingUser;
         break
       }
     }
@@ -27,20 +28,19 @@ i18n.setLanguage = async (language) => {
 }
 
 i18n.fallbacks = true;
-i18n.pluralization['ru'] = (count) => {
-  return([
-    count == 0 ? 'zero' :
-    count % 10 == 1 && count % 100 != 11
+i18n.pluralization = undefined;
+i18n.pluralization['ru'] = count => ([
+  count === 0 ? 'zero' :
+    count % 10 === 1 && count % 100 !== 11
       ? 'one'
       : [2, 3, 4].indexOf(count % 10) >= 0 &&
-        [12, 13, 14].indexOf(count % 100) < 0
-      ? 'few'
-      : count % 10 == 0 ||
+      [12, 13, 14].indexOf(count % 100) < 0
+        ? 'few'
+        : count % 10 === 0 ||
         [5, 6, 7, 8, 9].indexOf(count % 10) >= 0 ||
         [11, 12, 13, 14].indexOf(count % 100) >= 0
-      ? 'many'
-      : 'other'
-  ]);
-};
+          ? 'many'
+          : 'other'
+]);
 
 export default i18n;
